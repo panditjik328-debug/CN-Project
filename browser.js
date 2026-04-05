@@ -1,4 +1,3 @@
-"use strict";
 // DEFLATE is a complex format; to read this code, you should probably check the RFC first:
 // https://tools.ietf.org/html/rfc1951
 // You may also wish to take a look at the guide I made about this program:
@@ -8,7 +7,15 @@
 // However, the vast majority of the codebase has diverged from UZIP.js to increase performance and reduce bundle size.
 // Sometimes 0 will appear where -1 would be more appropriate. This is because using a uint
 // is better for memory in most engines (I *think*).
-var node_worker_1 = require("./node-worker.cjs");
+var ch2 = {};
+var wk = (function (c, id, msg, transfer, cb) {
+    var w = new Worker(ch2[id] || (ch2[id] = URL.createObjectURL(new Blob([c], { type: 'text/javascript' }))));
+    w.onerror = function (e) { return cb(e.error, null); };
+    w.onmessage = function (e) { return cb(null, e.data); };
+    w.postMessage(msg, transfer);
+    return w;
+});
+
 // aliases for shorter compressed code (most minifers don't do this)
 var u8 = Uint8Array, u16 = Uint16Array, u32 = Uint32Array;
 // fixed length extra bits
@@ -790,7 +797,7 @@ var wrkr = function (fns, init, id, cb) {
         ch[id] = wcln(fns[m], fnStr, td_1);
     }
     var td = mrg({}, ch[id][1]);
-    return node_worker_1["default"](ch[id][0] + ';onmessage=function(e){for(var k in e.data)self[k]=e.data[k];onmessage=' + init.toString() + '}', id, td, cbfs(td), cb);
+    return wk(ch[id][0] + ';onmessage=function(e){for(var k in e.data)self[k]=e.data[k];onmessage=' + init.toString() + '}', id, td, cbfs(td), cb);
 };
 // base async inflate fn
 var bInflt = function () { return [u8, u16, u32, fleb, fdeb, clim, fl, fd, flrm, fdrm, rev, hMap, max, bits, bits16, shft, slc, inflt, inflateSync, pbf, gu8]; };
@@ -932,7 +939,7 @@ var Deflate = /*#__PURE__*/ (function () {
     };
     return Deflate;
 }());
-exports.Deflate = Deflate;
+export { Deflate };
 /**
  * Asynchronous streaming DEFLATE compression
  */
@@ -948,8 +955,8 @@ var AsyncDeflate = /*#__PURE__*/ (function () {
     }
     return AsyncDeflate;
 }());
-exports.AsyncDeflate = AsyncDeflate;
-function deflate(data, opts, cb) {
+export { AsyncDeflate };
+export function deflate(data, opts, cb) {
     if (!cb)
         cb = opts, opts = {};
     if (typeof cb != 'function')
@@ -958,17 +965,15 @@ function deflate(data, opts, cb) {
         bDflt,
     ], function (ev) { return pbf(deflateSync(ev.data[0], ev.data[1])); }, 0, cb);
 }
-exports.deflate = deflate;
 /**
  * Compresses data with DEFLATE without any wrapper
  * @param data The data to compress
  * @param opts The compression options
  * @returns The deflated version of the data
  */
-function deflateSync(data, opts) {
+export function deflateSync(data, opts) {
     return dopt(data, opts || {}, 0, 0);
 }
-exports.deflateSync = deflateSync;
 /**
  * Streaming DEFLATE decompression
  */
@@ -1009,7 +1014,7 @@ var Inflate = /*#__PURE__*/ (function () {
     };
     return Inflate;
 }());
-exports.Inflate = Inflate;
+export { Inflate };
 /**
  * Asynchronous streaming DEFLATE decompression
  */
@@ -1030,8 +1035,8 @@ var AsyncInflate = /*#__PURE__*/ (function () {
     }
     return AsyncInflate;
 }());
-exports.AsyncInflate = AsyncInflate;
-function inflate(data, opts, cb) {
+export { AsyncInflate };
+export function inflate(data, opts, cb) {
     if (!cb)
         cb = opts, opts = {};
     if (typeof cb != 'function')
@@ -1040,17 +1045,15 @@ function inflate(data, opts, cb) {
         bInflt
     ], function (ev) { return pbf(inflateSync(ev.data[0], gu8(ev.data[1]))); }, 1, cb);
 }
-exports.inflate = inflate;
 /**
  * Expands DEFLATE data with no wrapper
  * @param data The data to decompress
  * @param out Where to write the data. Saves memory if you know the decompressed size and provide an output buffer of that length.
  * @returns The decompressed version of the data
  */
-function inflateSync(data, out) {
+export function inflateSync(data, out) {
     return inflt(data, out);
 }
-exports.inflateSync = inflateSync;
 // before you yell at me for not just using extends, my reason is that TS inheritance is hard to workerize.
 /**
  * Streaming GZIP compression
@@ -1082,8 +1085,7 @@ var Gzip = /*#__PURE__*/ (function () {
     };
     return Gzip;
 }());
-exports.Gzip = Gzip;
-exports.Compress = Gzip;
+export { Gzip };
 /**
  * Asynchronous streaming GZIP compression
  */
@@ -1100,9 +1102,8 @@ var AsyncGzip = /*#__PURE__*/ (function () {
     }
     return AsyncGzip;
 }());
-exports.AsyncGzip = AsyncGzip;
-exports.AsyncCompress = AsyncGzip;
-function gzip(data, opts, cb) {
+export { AsyncGzip };
+export function gzip(data, opts, cb) {
     if (!cb)
         cb = opts, opts = {};
     if (typeof cb != 'function')
@@ -1113,15 +1114,13 @@ function gzip(data, opts, cb) {
         function () { return [gzipSync]; }
     ], function (ev) { return pbf(gzipSync(ev.data[0], ev.data[1])); }, 2, cb);
 }
-exports.gzip = gzip;
-exports.compress = gzip;
 /**
  * Compresses data with GZIP
  * @param data The data to compress
  * @param opts The compression options
  * @returns The gzipped version of the data
  */
-function gzipSync(data, opts) {
+export function gzipSync(data, opts) {
     if (!opts)
         opts = {};
     var c = crc(), l = data.length;
@@ -1129,8 +1128,6 @@ function gzipSync(data, opts) {
     var d = dopt(data, opts, gzhl(opts), 8), s = d.length;
     return gzh(d, opts), wbytes(d, s - 8, c.d()), wbytes(d, s - 4, l), d;
 }
-exports.gzipSync = gzipSync;
-exports.compressSync = gzipSync;
 /**
  * Streaming GZIP decompression
  */
@@ -1167,7 +1164,7 @@ var Gunzip = /*#__PURE__*/ (function () {
     };
     return Gunzip;
 }());
-exports.Gunzip = Gunzip;
+export { Gunzip };
 /**
  * Asynchronous streaming GZIP decompression
  */
@@ -1189,8 +1186,8 @@ var AsyncGunzip = /*#__PURE__*/ (function () {
     }
     return AsyncGunzip;
 }());
-exports.AsyncGunzip = AsyncGunzip;
-function gunzip(data, opts, cb) {
+export { AsyncGunzip };
+export function gunzip(data, opts, cb) {
     if (!cb)
         cb = opts, opts = {};
     if (typeof cb != 'function')
@@ -1201,17 +1198,15 @@ function gunzip(data, opts, cb) {
         function () { return [gunzipSync]; }
     ], function (ev) { return pbf(gunzipSync(ev.data[0])); }, 3, cb);
 }
-exports.gunzip = gunzip;
 /**
  * Expands GZIP data
  * @param data The data to decompress
  * @param out Where to write the data. GZIP already encodes the output size, so providing this doesn't save memory.
  * @returns The decompressed version of the data
  */
-function gunzipSync(data, out) {
+export function gunzipSync(data, out) {
     return inflt(data.subarray(gzs(data), -8), out || new u8(gzl(data)));
 }
-exports.gunzipSync = gunzipSync;
 /**
  * Streaming Zlib compression
  */
@@ -1240,7 +1235,7 @@ var Zlib = /*#__PURE__*/ (function () {
     };
     return Zlib;
 }());
-exports.Zlib = Zlib;
+export { Zlib };
 /**
  * Asynchronous streaming Zlib compression
  */
@@ -1257,8 +1252,8 @@ var AsyncZlib = /*#__PURE__*/ (function () {
     }
     return AsyncZlib;
 }());
-exports.AsyncZlib = AsyncZlib;
-function zlib(data, opts, cb) {
+export { AsyncZlib };
+export function zlib(data, opts, cb) {
     if (!cb)
         cb = opts, opts = {};
     if (typeof cb != 'function')
@@ -1269,14 +1264,13 @@ function zlib(data, opts, cb) {
         function () { return [zlibSync]; }
     ], function (ev) { return pbf(zlibSync(ev.data[0], ev.data[1])); }, 4, cb);
 }
-exports.zlib = zlib;
 /**
  * Compress data with Zlib
  * @param data The data to compress
  * @param opts The compression options
  * @returns The zlib-compressed version of the data
  */
-function zlibSync(data, opts) {
+export function zlibSync(data, opts) {
     if (!opts)
         opts = {};
     var a = adler();
@@ -1284,7 +1278,6 @@ function zlibSync(data, opts) {
     var d = dopt(data, opts, 2, 4);
     return zlh(d, opts), wbytes(d, d.length - 4, a.d()), d;
 }
-exports.zlibSync = zlibSync;
 /**
  * Streaming Zlib decompression
  */
@@ -1320,7 +1313,7 @@ var Unzlib = /*#__PURE__*/ (function () {
     };
     return Unzlib;
 }());
-exports.Unzlib = Unzlib;
+export { Unzlib };
 /**
  * Asynchronous streaming Zlib decompression
  */
@@ -1342,8 +1335,8 @@ var AsyncUnzlib = /*#__PURE__*/ (function () {
     }
     return AsyncUnzlib;
 }());
-exports.AsyncUnzlib = AsyncUnzlib;
-function unzlib(data, opts, cb) {
+export { AsyncUnzlib };
+export function unzlib(data, opts, cb) {
     if (!cb)
         cb = opts, opts = {};
     if (typeof cb != 'function')
@@ -1354,17 +1347,19 @@ function unzlib(data, opts, cb) {
         function () { return [unzlibSync]; }
     ], function (ev) { return pbf(unzlibSync(ev.data[0], gu8(ev.data[1]))); }, 5, cb);
 }
-exports.unzlib = unzlib;
 /**
  * Expands Zlib data
  * @param data The data to decompress
  * @param out Where to write the data. Saves memory if you know the decompressed size and provide an output buffer of that length.
  * @returns The decompressed version of the data
  */
-function unzlibSync(data, out) {
+export function unzlibSync(data, out) {
     return inflt((zlv(data), data.subarray(2, -4)), out);
 }
-exports.unzlibSync = unzlibSync;
+// Default algorithm for compression (used because having a known output size allows faster decompression)
+export { gzip as compress, AsyncGzip as AsyncCompress };
+// Default algorithm for compression (used because having a known output size allows faster decompression)
+export { gzipSync as compressSync, Gzip as Compress };
 /**
  * Streaming GZIP, Zlib, or raw DEFLATE decompression
  */
@@ -1411,7 +1406,7 @@ var Decompress = /*#__PURE__*/ (function () {
     };
     return Decompress;
 }());
-exports.Decompress = Decompress;
+export { Decompress };
 /**
  * Asynchronous streaming GZIP, Zlib, or raw DEFLATE decompression
  */
@@ -1436,8 +1431,8 @@ var AsyncDecompress = /*#__PURE__*/ (function () {
     };
     return AsyncDecompress;
 }());
-exports.AsyncDecompress = AsyncDecompress;
-function decompress(data, opts, cb) {
+export { AsyncDecompress };
+export function decompress(data, opts, cb) {
     if (!cb)
         cb = opts, opts = {};
     if (typeof cb != 'function')
@@ -1448,21 +1443,19 @@ function decompress(data, opts, cb) {
             ? inflate(data, opts, cb)
             : unzlib(data, opts, cb);
 }
-exports.decompress = decompress;
 /**
  * Expands compressed GZIP, Zlib, or raw DEFLATE data, automatically detecting the format
  * @param data The data to decompress
  * @param out Where to write the data. Saves memory if you know the decompressed size and provide an output buffer of that length.
  * @returns The decompressed version of the data
  */
-function decompressSync(data, out) {
+export function decompressSync(data, out) {
     return (data[0] == 31 && data[1] == 139 && data[2] == 8)
         ? gunzipSync(data, out)
         : ((data[0] & 15) != 8 || (data[0] >> 4) > 7 || ((data[0] << 8 | data[1]) % 31))
             ? inflateSync(data, out)
             : unzlibSync(data, out);
 }
-exports.decompressSync = decompressSync;
 // flatten a directory structure
 var fltn = function (d, p, t, o) {
     for (var k in d) {
@@ -1555,7 +1548,7 @@ var DecodeUTF8 = /*#__PURE__*/ (function () {
     };
     return DecodeUTF8;
 }());
-exports.DecodeUTF8 = DecodeUTF8;
+export { DecodeUTF8 };
 /**
  * Streaming UTF-8 encoding
  */
@@ -1581,7 +1574,7 @@ var EncodeUTF8 = /*#__PURE__*/ (function () {
     };
     return EncodeUTF8;
 }());
-exports.EncodeUTF8 = EncodeUTF8;
+export { EncodeUTF8 };
 /**
  * Converts a string into a Uint8Array for use with compression/decompression methods
  * @param str The string to encode
@@ -1589,7 +1582,7 @@ exports.EncodeUTF8 = EncodeUTF8;
  *               not need to be true unless decoding a binary string.
  * @returns The string encoded in UTF-8/Latin-1 binary
  */
-function strToU8(str, latin1) {
+export function strToU8(str, latin1) {
     if (latin1) {
         var ar_1 = new u8(str.length);
         for (var i = 0; i < str.length; ++i)
@@ -1621,7 +1614,6 @@ function strToU8(str, latin1) {
     }
     return slc(ar, 0, ai);
 }
-exports.strToU8 = strToU8;
 /**
  * Converts a Uint8Array to a string
  * @param dat The data to decode to string
@@ -1629,7 +1621,7 @@ exports.strToU8 = strToU8;
  *               not need to be true unless encoding to binary string.
  * @returns The original UTF-8/Latin-1 string
  */
-function strFromU8(dat, latin1) {
+export function strFromU8(dat, latin1) {
     if (latin1) {
         var r = '';
         for (var i = 0; i < dat.length; i += 16384)
@@ -1645,7 +1637,6 @@ function strFromU8(dat, latin1) {
         return out;
     }
 }
-exports.strFromU8 = strFromU8;
 ;
 // deflate bit flag
 var dbf = function (l) { return l == 1 ? 3 : l < 6 ? 2 : l == 9 ? 1 : 0; };
@@ -1767,7 +1758,7 @@ var ZipPassThrough = /*#__PURE__*/ (function () {
     };
     return ZipPassThrough;
 }());
-exports.ZipPassThrough = ZipPassThrough;
+export { ZipPassThrough };
 // I don't extend because TypeScript extension adds 1kB of runtime bloat
 /**
  * Streaming DEFLATE compression for ZIP archives. Prefer using AsyncZipDeflate
@@ -1808,7 +1799,7 @@ var ZipDeflate = /*#__PURE__*/ (function () {
     };
     return ZipDeflate;
 }());
-exports.ZipDeflate = ZipDeflate;
+export { ZipDeflate };
 /**
  * Asynchronous streaming DEFLATE compression for ZIP archives
  */
@@ -1843,7 +1834,7 @@ var AsyncZipDeflate = /*#__PURE__*/ (function () {
     };
     return AsyncZipDeflate;
 }());
-exports.AsyncZipDeflate = AsyncZipDeflate;
+export { AsyncZipDeflate };
 // TODO: Better tree shaking
 /**
  * A zippable archive to which files can incrementally be added
@@ -1988,8 +1979,8 @@ var Zip = /*#__PURE__*/ (function () {
     };
     return Zip;
 }());
-exports.Zip = Zip;
-function zip(data, opts, cb) {
+export { Zip };
+export function zip(data, opts, cb) {
     if (!cb)
         cb = opts, opts = {};
     if (typeof cb != 'function')
@@ -2078,7 +2069,6 @@ function zip(data, opts, cb) {
     }
     return tAll;
 }
-exports.zip = zip;
 /**
  * Synchronously creates a ZIP file. Prefer using `zip` for better performance
  * with more than one file.
@@ -2086,7 +2076,7 @@ exports.zip = zip;
  * @param opts The main options, merged with per-file options
  * @returns The generated ZIP archive
  */
-function zipSync(data, opts) {
+export function zipSync(data, opts) {
     if (!opts)
         opts = {};
     var r = {};
@@ -2129,7 +2119,6 @@ function zipSync(data, opts) {
     wzf(out, o, files.length, cdl, oe);
     return out;
 }
-exports.zipSync = zipSync;
 /**
  * Streaming pass-through decompression for ZIP archives
  */
@@ -2142,7 +2131,7 @@ var UnzipPassThrough = /*#__PURE__*/ (function () {
     UnzipPassThrough.compression = 0;
     return UnzipPassThrough;
 }());
-exports.UnzipPassThrough = UnzipPassThrough;
+export { UnzipPassThrough };
 /**
  * Streaming DEFLATE decompression for ZIP archives. Prefer AsyncZipInflate for
  * better performance.
@@ -2168,7 +2157,7 @@ var UnzipInflate = /*#__PURE__*/ (function () {
     UnzipInflate.compression = 8;
     return UnzipInflate;
 }());
-exports.UnzipInflate = UnzipInflate;
+export { UnzipInflate };
 /**
  * Asynchronous streaming DEFLATE decompression for ZIP archives
  */
@@ -2198,7 +2187,7 @@ var AsyncUnzipInflate = /*#__PURE__*/ (function () {
     AsyncUnzipInflate.compression = 8;
     return AsyncUnzipInflate;
 }());
-exports.AsyncUnzipInflate = AsyncUnzipInflate;
+export { AsyncUnzipInflate };
 /**
  * A ZIP archive decompression stream that emits files as they are discovered
  */
@@ -2351,14 +2340,14 @@ var Unzip = /*#__PURE__*/ (function () {
     };
     return Unzip;
 }());
-exports.Unzip = Unzip;
+export { Unzip };
 /**
  * Asynchronously decompresses a ZIP archive
  * @param data The raw compressed ZIP file
  * @param cb The callback to call with the decompressed files
  * @returns A function that can be used to immediately terminate the unzipping
  */
-function unzip(data, cb) {
+export function unzip(data, cb) {
     if (typeof cb != 'function')
         throw 'no callback';
     var term = [];
@@ -2427,14 +2416,13 @@ function unzip(data, cb) {
     }
     return tAll;
 }
-exports.unzip = unzip;
 /**
  * Synchronously decompresses a ZIP archive. Prefer using `unzip` for better
  * performance with more than one file.
  * @param data The raw compressed ZIP file
  * @returns The decompressed files
  */
-function unzipSync(data) {
+export function unzipSync(data) {
     var files = {};
     var e = data.length - 22;
     for (; b4(data, e) != 0x6054B50; --e) {
@@ -2466,4 +2454,3 @@ function unzipSync(data) {
     }
     return files;
 }
-exports.unzipSync = unzipSync;

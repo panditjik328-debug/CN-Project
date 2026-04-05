@@ -1,2966 +1,1195 @@
 /**
- * The following defined constants and descriptions are directly ported from https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
- *
- * Any copyright is dedicated to the Public Domain. http://creativecommons.org/publicdomain/zero/1.0/
- *
- * Contributors
- *
- * See: https://developer.mozilla.org/en-US/profiles/Sheppy
- * See: https://developer.mozilla.org/en-US/profiles/fscholz
- * See: https://developer.mozilla.org/en-US/profiles/AtiX
- * See: https://developer.mozilla.org/en-US/profiles/Sebastianz
- *
- * These constants are defined on the WebGLRenderingContext / WebGL2RenderingContext interface
- */
-/**
- * Passed to clear to clear the current depth buffer
- * @constant {number}
- */
-export declare const GL_DEPTH_BUFFER_BIT: number;
-/**
- * Passed to clear to clear the current stencil buffer
- * @constant {number}
- */
-export declare const GL_STENCIL_BUFFER_BIT: number;
-/**
- * Passed to clear to clear the current color buffer
- * @constant {number}
- */
-export declare const GL_COLOR_BUFFER_BIT: number;
-/**
- * Passed to drawElements or drawArrays to draw single points
- * @constant {number}
- */
-export declare const GL_POINTS: number;
-/**
- * Passed to drawElements or drawArrays to draw lines. Each vertex connects to the one after it
- * @constant {number}
- */
-export declare const GL_LINES: number;
-/**
- * Passed to drawElements or drawArrays to draw lines. Each set of two vertices is treated as a separate line segment
- * @constant {number}
- */
-export declare const GL_LINE_LOOP: number;
-/**
- * Passed to drawElements or drawArrays to draw a connected group of line segments from the first vertex to the last
- * @constant {number}
- */
-export declare const GL_LINE_STRIP: number;
-/**
- * Passed to drawElements or drawArrays to draw triangles. Each set of three vertices creates a separate triangle
- * @constant {number}
- */
-export declare const GL_TRIANGLES: number;
-/**
- * Passed to drawElements or drawArrays to draw a connected group of triangles
- * @constant {number}
- */
-export declare const GL_TRIANGLE_STRIP: number;
-/**
- * Passed to drawElements or drawArrays to draw a connected group of triangles. Each vertex connects to the previous and the first vertex in the fan
- * @constant {number}
- */
-export declare const GL_TRIANGLE_FAN: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to turn off a component
- * @constant {number}
- */
-export declare const GL_ZERO: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to turn on a component
- * @constant {number}
- */
-export declare const GL_ONE: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to multiply a component by the source elements color
- * @constant {number}
- */
-export declare const GL_SRC_COLOR: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to multiply a component by one minus the source elements color
- * @constant {number}
- */
-export declare const GL_ONE_MINUS_SRC_COLOR: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to multiply a component by the source's alpha
- * @constant {number}
- */
-export declare const GL_SRC_ALPHA: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to multiply a component by one minus the source's alpha
- * @constant {number}
- */
-export declare const GL_ONE_MINUS_SRC_ALPHA: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to multiply a component by the destination's alpha
- * @constant {number}
- */
-export declare const GL_DST_ALPHA: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to multiply a component by one minus the destination's alpha
- * @constant {number}
- */
-export declare const GL_ONE_MINUS_DST_ALPHA: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to multiply a component by the destination's color
- * @constant {number}
- */
-export declare const GL_DST_COLOR: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to multiply a component by one minus the destination's color
- * @constant {number}
- */
-export declare const GL_ONE_MINUS_DST_COLOR: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to multiply a component by the minimum of source's alpha or one minus the destination's alpha
- * @constant {number}
- */
-export declare const GL_SRC_ALPHA_SATURATE: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to specify a constant color blend function
- * @constant {number}
- */
-export declare const GL_CONSTANT_COLOR: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to specify one minus a constant color blend function
- * @constant {number}
- */
-export declare const GL_ONE_MINUS_CONSTANT_COLOR: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to specify a constant alpha blend function
- * @constant {number}
- */
-export declare const GL_CONSTANT_ALPHA: number;
-/**
- * Passed to blendFunc or blendFuncSeparate to specify one minus a constant alpha blend function
- * @constant {number}
- */
-export declare const GL_ONE_MINUS_CONSTANT_ALPHA: number;
-/**
- * Passed to blendEquation or blendEquationSeparate to set an addition blend function
- * @constant {number}
- */
-export declare const GL_FUNC_ADD: number;
-/**
- * Passed to blendEquation or blendEquationSeparate to specify a subtraction blend function (source - destination)
- * @constant {number}
- */
-export declare const GL_FUNC_SUBSTRACT: number;
-/**
- * Passed to blendEquation or blendEquationSeparate to specify a reverse subtraction blend function (destination - source)
- * @constant {number}
- */
-export declare const GL_FUNC_REVERSE_SUBTRACT: number;
-/**
- * Passed to getParameter to get the current RGB blend function
- * @constant {number}
- */
-export declare const GL_BLEND_EQUATION: number;
-/**
- * Passed to getParameter to get the current RGB blend function. Same as BLEND_EQUATION
- * @constant {number}
- */
-export declare const GL_BLEND_EQUATION_RGB: number;
-/**
- * Passed to getParameter to get the current alpha blend function. Same as BLEND_EQUATION
- * @constant {number}
- */
-export declare const GL_BLEND_EQUATION_ALPHA: number;
-/**
- * Passed to getParameter to get the current destination RGB blend function
- * @constant {number}
- */
-export declare const GL_BLEND_DST_RGB: number;
-/**
- * Passed to getParameter to get the current source RGB blend function
- * @constant {number}
- */
-export declare const GL_BLEND_SRC_RGB: number;
-/**
- * Passed to getParameter to get the current destination alpha blend function
- * @constant {number}
- */
-export declare const GL_BLEND_DST_ALPHA: number;
-/**
- * Passed to getParameter to get the current source alpha blend function
- * @constant {number}
- */
-export declare const GL_BLEND_SRC_ALPHA: number;
-/**
- * Passed to getParameter to return a the current blend color
- * @constant {number}
- */
-export declare const GL_BLEND_COLOR: number;
-/**
- * Passed to getParameter to get the array buffer binding
- * @constant {number}
- */
-export declare const GL_ARRAY_BUFFER_BINDING: number;
-/**
- * Passed to getParameter to get the current element array buffer
- * @constant {number}
- */
-export declare const GL_ELEMENT_ARRAY_BUFFER_BINDING: number;
-/**
- * Passed to getParameter to get the current lineWidth (set by the lineWidth method)
- * @constant {number}
- */
-export declare const GL_LINE_WIDTH: number;
-/**
- * Passed to getParameter to get the current size of a point drawn with gl.POINTS
- * @constant {number}
- */
-export declare const GL_ALIASED_POINT_SIZE_RANGE: number;
-/**
- * Passed to getParameter to get the range of available widths for a line. Returns a length-2 array with the lo value at 0, and hight at 1
- * @constant {number}
- */
-export declare const GL_ALIASED_LINE_WIDTH_RANGE: number;
-/**
- * Passed to getParameter to get the current value of cullFace. Should return FRONT, BACK, or FRONT_AND_BACK
- * @constant {number}
- */
-export declare const GL_CULL_FACE_MODE: number;
-/**
- * Passed to getParameter to determine the current value of frontFace. Should return CW or CCW
- * @constant {number}
- */
-export declare const GL_FRONT_FACE: number;
-/**
- * Passed to getParameter to return a length-2 array of floats giving the current depth range
- * @constant {number}
- */
-export declare const GL_DEPTH_RANGE: number;
-/**
- * Passed to getParameter to determine if the depth write mask is enabled
- * @constant {number}
- */
-export declare const GL_DEPTH_WRITEMASK: number;
-/**
- * Passed to getParameter to determine the current depth clear value
- * @constant {number}
- */
-export declare const GL_DEPTH_CLEAR_VALUE: number;
-/**
- * Passed to getParameter to get the current depth function. Returns NEVER, ALWAYS, LESS, EQUAL, LEQUAL, GREATER, GEQUAL, or NOTEQUAL
- * @constant {number}
- */
-export declare const GL_DEPTH_FUNC: number;
-/**
- * Passed to getParameter to get the value the stencil will be cleared to
- * @constant {number}
- */
-export declare const GL_STENCIL_CLEAR_VALUE: number;
-/**
- * Passed to getParameter to get the current stencil function. Returns NEVER, ALWAYS, LESS, EQUAL, LEQUAL, GREATER, GEQUAL, or NOTEQUAL
- * @constant {number}
- */
-export declare const GL_STENCIL_FUNC: number;
-/**
- * Passed to getParameter to get the current stencil fail function. Should return KEEP, REPLACE, INCR, DECR, INVERT, INCR_WRAP, or DECR_WRAP
- * @constant {number}
- */
-export declare const GL_STENCIL_FAIL: number;
-/**
- * Passed to getParameter to get the current stencil fail function should the depth buffer test fail. Should return KEEP, REPLACE, INCR, DECR, INVERT, INCR_WRAP, or DECR_WRAP
- * @constant {number}
- */
-export declare const GL_STENCIL_PASS_DEPTH_FAIL: number;
-/**
- * Passed to getParameter to get the current stencil fail function should the depth buffer test pass. Should return KEEP, REPLACE, INCR, DECR, INVERT, INCR_WRAP, or DECR_WRAP
- * @constant {number}
- */
-export declare const GL_STENCIL_PASS_DEPTH_PASS: number;
-/**
- * Passed to getParameter to get the reference value used for stencil tests
- * @constant {number}
- */
-export declare const GL_STENCIL_REF: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_VALUE_MASK: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_WRITEMASK: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_BACK_FUNC: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_BACK_FAIL: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_BACK_PASS_DEPTH_FAIL: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_BACK_PASS_DEPTH_PASS: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_BACK_REF: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_BACK_VALUE_MASK: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_BACK_WRITEMASK: number;
-/**
- * Returns an Int32Array with four elements for the current viewport dimensions
- * @constant {number}
- */
-export declare const GL_VIEWPORT: number;
-/**
- * Returns an Int32Array with four elements for the current scissor box dimensions
- * @constant {number}
- */
-export declare const GL_SCISSOR_BOX: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_CLEAR_VALUE: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_WRITEMASK: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNPACK_ALIGNMENT: number;
-/**
- * @constant {number}
- */
-export declare const GL_PACK_ALIGNMENT: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_TEXTURE_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_VIEWPORT_DIMS: number;
-/**
- * @constant {number}
- */
-export declare const GL_SUBPIXEL_BITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_RED_BITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_GREEN_BITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_BLUE_BITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_ALPHA_BITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH_BITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_BITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_POLYGON_OFFSET_UNITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_POLYGON_OFFSET_FACTOR: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_BINDING_2D: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLE_BUFFERS: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLES: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLE_COVERAGE_VALUE: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLE_COVERAGE_INVERT: number;
-/**
- * @constant {number}
- */
-export declare const GL_COMPRESSED_TEXTURE_FORMATS: number;
-/**
- * @constant {number}
- */
-export declare const GL_VENDOR: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERER: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERSION: number;
-/**
- * @constant {number}
- */
-export declare const GL_IMPLEMENTATION_COLOR_READ_TYPE: number;
-/**
- * @constant {number}
- */
-export declare const GL_IMPLEMENTATION_COLOR_READ_FORMAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_BROWSER_DEFAULT_WEBGL: number;
-/**
- * Passed to bufferData as a hint about whether the contents of the buffer are likely to be used often and not change often
- * @constant {number}
- */
-export declare const GL_STATIC_DRAW: number;
-/**
- * Passed to bufferData as a hint about whether the contents of the buffer are likely to not be used often
- * @constant {number}
- */
-export declare const GL_STREAM_DRAW: number;
-/**
- * Passed to bufferData as a hint about whether the contents of the buffer are likely to be used often and change often
- * @constant {number}
- */
-export declare const GL_DYNAMIC_DRAW: number;
-/**
- * Passed to bindBuffer or bufferData to specify the type of buffer being used
- * @constant {number}
- */
-export declare const GL_ARRAY_BUFFER: number;
-/**
- * Passed to bindBuffer or bufferData to specify the type of buffer being used
- * @constant {number}
- */
-export declare const GL_ELEMENT_ARRAY_BUFFER: number;
-/**
- * Passed to getBufferParameter to get a buffer's size
- * @constant {number}
- */
-export declare const GL_BUFFER_SIZE: number;
-/**
- * Passed to getBufferParameter to get the hint for the buffer passed in when it was created
- * @constant {number}
- */
-export declare const GL_BUFFER_USAGE: number;
-/**
- * Passed to getVertexAttrib to read back the current vertex attribute
- * @constant {number}
- */
-export declare const GL_CURRENT_VERTEX_ATTRIB: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_ENABLED: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_STRIDE: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_TYPE: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_NORMALIZED: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_POINTER: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING: number;
-/**
- * Passed to enable/disable to turn on/off culling. Can also be used with getParameter to find the current culling method
- * @constant {number}
- */
-export declare const GL_CULL_FACE: number;
-/**
- * Passed to cullFace to specify that only front faces should be culled
- * @constant {number}
- */
-export declare const GL_FRONT: number;
-/**
- * Passed to cullFace to specify that only back faces should be culled
- * @constant {number}
- */
-export declare const GL_BACK: number;
-/**
- * Passed to cullFace to specify that front and back faces should be culled
- * @constant {number}
- */
-export declare const GL_FRONT_AND_BACK: number;
-/**
- * Passed to enable/disable to turn on/off blending. Can also be used with getParameter to find the current blending method
- * @constant {number}
- */
-export declare const GL_BLEND: number;
-/**
- * Passed to enable/disable to turn on/off the depth test. Can also be used with getParameter to query the depth test
- * @constant {number}
- */
-export declare const GL_DEPTH_TEST: number;
-/**
- * Passed to enable/disable to turn on/off dithering. Can also be used with getParameter to find the current dithering method
- * @constant {number}
- */
-export declare const GL_DITHER: number;
-/**
- * Passed to enable/disable to turn on/off the polygon offset. Useful for rendering hidden-line images, decals, and or solids with highlighted edges. Can also be used with getParameter to query the scissor test
- * @constant {number}
- */
-export declare const GL_POLYGON_OFFSET_FILL: number;
-/**
- * Passed to enable/disable to turn on/off the alpha to coverage. Used in multi-sampling alpha channels
- * @constant {number}
- */
-export declare const GL_SAMPLE_ALPHA_TO_COVERAGE: number;
-/**
- * Passed to enable/disable to turn on/off the sample coverage. Used in multi-sampling
- * @constant {number}
- */
-export declare const GL_SAMPLE_COVERAGE: number;
-/**
- * Passed to enable/disable to turn on/off the scissor test. Can also be used with getParameter to query the scissor test
- * @constant {number}
- */
-export declare const GL_SCISSOR_TEST: number;
-/**
- * Passed to enable/disable to turn on/off the stencil test. Can also be used with getParameter to query the stencil test
- * @constant {number}
- */
-export declare const GL_STENCIL_TEST: number;
-/**
- * Returned from getError
- * @constant {number}
- */
-export declare const GL_NO_ERROR: number;
-/**
- * Returned from getError
- * @constant {number}
- */
-export declare const GL_INVALID_ENUM: number;
-/**
- * Returned from getError
- * @constant {number}
- */
-export declare const GL_INVALID_VALUE: number;
-/**
- * Returned from getError
- * @constant {number}
- */
-export declare const GL_INVALID_OPERATION: number;
-/**
- * Returned from getError
- * @constant {number}
- */
-export declare const GL_OUT_OF_MEMORY: number;
-/**
- * Returned from getError
- * @constant {number}
- */
-export declare const GL_CONTEXT_LOST_WEBGL: number;
-/**
- * Passed to frontFace to specify the front face of a polygon is drawn in the clockwise direction,
- * @constant {number}
- */
-export declare const GL_CW: number;
-/**
- * Passed to frontFace to specify the front face of a polygon is drawn in the counter clockwise direction
- * @constant {number}
- */
-export declare const GL_CCW: number;
-/**
- * There is no preference for this behavior
- * @constant {number}
- */
-export declare const GL_DONT_CARE: number;
-/**
- * The most efficient behavior should be used
- * @constant {number}
- */
-export declare const GL_FASTEST: number;
-/**
- * The most correct or the highest quality option should be used
- * @constant {number}
- */
-export declare const GL_NICEST: number;
-/**
- * Hint for the quality of filtering when generating mipmap images with WebGLRenderingContext.generateMipmap()
- * @constant {number}
- */
-export declare const GL_GENERATE_MIPMAP_HINT: number;
-/**
- * @constant {number}
- */
-export declare const GL_BYTE: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_BYTE: number;
-/**
- * @constant {number}
- */
-export declare const GL_SHORT: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_SHORT: number;
-/**
- * @constant {number}
- */
-export declare const GL_INT: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH_COMPONENT: number;
-/**
- * @constant {number}
- */
-export declare const GL_ALPHA: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA: number;
-/**
- * @constant {number}
- */
-export declare const GL_LUMINANCE: number;
-/**
- * @constant {number}
- */
-export declare const GL_LUMINANCE_ALPHA: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_SHORT_4_4_4_4: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_SHORT_5_5_5_1: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_SHORT_5_6_5: number;
-/**
- * Passed to createShader to define a fragment shader
- * @constant {number}
- */
-export declare const GL_FRAGMENT_SHADER: number;
-/**
- * Passed to createShader to define a vertex shader
- * @constant {number}
- */
-export declare const GL_VERTEX_SHADER: number;
-/**
- * Passed to getShaderParamter to get the status of the compilation. Returns false if the shader was not compiled. You can then query getShaderInfoLog to find the exact error
- * @constant {number}
- */
-export declare const GL_COMPILE_STATUS: number;
-/**
- * Passed to getShaderParamter to determine if a shader was deleted via deleteShader. Returns true if it was, false otherwise
- * @constant {number}
- */
-export declare const GL_DELETE_STATUS: number;
-/**
- * Passed to getProgramParameter after calling linkProgram to determine if a program was linked correctly. Returns false if there were errors. Use getProgramInfoLog to find the exact error
- * @constant {number}
- */
-export declare const GL_LINK_STATUS: number;
-/**
- * Passed to getProgramParameter after calling validateProgram to determine if it is valid. Returns false if errors were found
- * @constant {number}
- */
-export declare const GL_VALIDATE_STATUS: number;
-/**
- * Passed to getProgramParameter after calling attachShader to determine if the shader was attached correctly. Returns false if errors occurred
- * @constant {number}
- */
-export declare const GL_ATTACHED_SHADERS: number;
-/**
- * Passed to getProgramParameter to get the number of attributes active in a program
- * @constant {number}
- */
-export declare const GL_ACTIVE_ATTRIBUTES: number;
-/**
- * Passed to getProgramParamter to get the number of uniforms active in a program
- * @constant {number}
- */
-export declare const GL_ACTIVE_UNIFORMS: number;
-/**
- * The maximum number of entries possible in the vertex attribute list
- * @constant {number}
- */
-export declare const GL_MAX_VERTEX_ATTRIBS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_VERTEX_UNIFORM_VECTORS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_VARYING_VECTORS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: number;
-/**
- * Implementation dependent number of maximum texture units. At least 8
- * @constant {number}
- */
-export declare const GL_MAX_TEXTURE_IMAGE_UNITS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_FRAGMENT_UNIFORM_VECTORS: number;
-/**
- * @constant {number}
- */
-export declare const GL_SHADER_TYPE: number;
-/**
- * @constant {number}
- */
-export declare const GL_SHADING_LANGUAGE_VERSION: number;
-/**
- * @constant {number}
- */
-export declare const GL_CURRENT_PROGRAM: number;
-/**
- * Passed to depthFunction or stencilFunction to specify depth or stencil tests will never pass. i.e. Nothing will be drawn
- * @constant {number}
- */
-export declare const GL_NEVER: number;
-/**
- * Passed to depthFunction or stencilFunction to specify depth or stencil tests will always pass. i.e. Pixels will be drawn in the order they are drawn
- * @constant {number}
- */
-export declare const GL_ALWAYS: number;
-/**
- * Passed to depthFunction or stencilFunction to specify depth or stencil tests will pass if the new depth value is less than the stored value
- * @constant {number}
- */
-export declare const GL_LESS: number;
-/**
- * Passed to depthFunction or stencilFunction to specify depth or stencil tests will pass if the new depth value is equals to the stored value
- * @constant {number}
- */
-export declare const GL_EQUAL: number;
-/**
- *  Passed to depthFunction or stencilFunction to specify depth or stencil tests will pass if the new depth value is less than or equal to the stored value
- * @constant {number}
- */
-export declare const GL_LEQUAL: number;
-/**
- * Passed to depthFunction or stencilFunction to specify depth or stencil tests will pass if the new depth value is greater than the stored value
- * @constant {number}
- */
-export declare const GL_GREATER: number;
-/**
- * Passed to depthFunction or stencilFunction to specify depth or stencil tests will pass if the new depth value is greater than or equal to the stored value
- * @constant {number}
- */
-export declare const GL_GEQUAL: number;
-/**
- * Passed to depthFunction or stencilFunction to specify depth or stencil tests will pass if the new depth value is not equal to the stored value
- * @constant {number}
- */
-export declare const GL_NOTEQUAL: number;
-/**
- * @constant {number}
- */
-export declare const GL_KEEP: number;
-/**
- * @constant {number}
- */
-export declare const GL_REPLACE: number;
-/**
- * @constant {number}
- */
-export declare const GL_INCR: number;
-/**
- * @constant {number}
- */
-export declare const GL_DECR: number;
-/**
- * @constant {number}
- */
-export declare const GL_INVERT: number;
-/**
- * @constant {number}
- */
-export declare const GL_INCR_WRAP: number;
-/**
- * @constant {number}
- */
-export declare const GL_DECR_WRAP: number;
-/**
- * @constant {number}
- */
-export declare const GL_NEAREST: number;
-/**
- * @constant {number}
- */
-export declare const GL_LINEAR: number;
-/**
- * @constant {number}
- */
-export declare const GL_NEAREST_MIPMAP_NEAREST: number;
-/**
- * @constant {number}
- */
-export declare const GL_LINEAR_MIPMAP_NEAREST: number;
-/**
- * @constant {number}
- */
-export declare const GL_NEAREST_MIPMAP_LINEAR: number;
-/**
- * @constant {number}
- */
-export declare const GL_LINEAR_MIPMAP_LINEAR: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_MAG_FILTER: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_MIN_FILTER: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_WRAP_S: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_WRAP_T: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_2D: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_CUBE_MAP: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_BINDING_CUBE_MAP: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_CUBE_MAP_POSITIVE_X: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_CUBE_MAP_NEGATIVE_X: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_CUBE_MAP_POSITIVE_Y: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_CUBE_MAP_NEGATIVE_Y: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_CUBE_MAP_POSITIVE_Z: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_CUBE_MAP_NEGATIVE_Z: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_CUBE_MAP_TEXTURE_SIZE: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE0: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE1: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE2: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE3: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE4: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE5: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE6: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE7: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE8: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE9: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE10: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE11: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE12: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE13: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE14: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE15: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE16: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE17: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE18: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE19: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE20: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE21: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE22: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE23: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE24: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE25: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE26: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE27: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE28: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE29: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE30: number;
-/**
- * A texture unit
- * @constant {number}
- */
-export declare const GL_TEXTURE31: number;
-/**
- * The current active texture unit
- * @constant {number}
- */
-export declare const GL_ACTIVE_TEXTURE: number;
-/**
- * @constant {number}
- */
-export declare const GL_REPEAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_CLAMP_TO_EDGE: number;
-/**
- * @constant {number}
- */
-export declare const GL_MIRRORED_REPEAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_VEC2: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_VEC3: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_VEC4: number;
-/**
- * @constant {number}
- */
-export declare const GL_INT_VEC2: number;
-/**
- * @constant {number}
- */
-export declare const GL_INT_VEC3: number;
-/**
- * @constant {number}
- */
-export declare const GL_INT_VEC4: number;
-/**
- * @constant {number}
- */
-export declare const GL_BOOL: number;
-/**
- * @constant {number}
- */
-export declare const GL_BOOL_VEC2: number;
-/**
- * @constant {number}
- */
-export declare const GL_BOOL_VEC3: number;
-/**
- * @constant {number}
- */
-export declare const GL_BOOL_VEC4: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_MAT2: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_MAT3: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_MAT4: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLER_2D: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLER_CUBE: number;
-/**
- * @constant {number}
- */
-export declare const GL_LOW_FLOAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_MEDIUM_FLOAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_HIGH_FLOAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_LOW_INT: number;
-/**
- * @constant {number}
- */
-export declare const GL_MEDIUM_INT: number;
-/**
- * @constant {number}
- */
-export declare const GL_HIGH_INT: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA4: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB5_A1: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB565: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH_COMPONENT16: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_INDEX: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_INDEX8: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH_STENCIL: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_WIDTH: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_HEIGHT: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_INTERNAL_FORMAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_RED_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_GREEN_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_BLUE_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_ALPHA_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_DEPTH_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_STENCIL_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT0: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH_ATTACHMENT: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL_ATTACHMENT: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH_STENCIL_ATTACHMENT: number;
-/**
- * @constant {number}
- */
-export declare const GL_NONE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_COMPLETE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_UNSUPPORTED: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_RENDERBUFFER_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_INVALID_FRAMEBUFFER_OPERATION: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNPACK_FLIP_Y_WEBGL: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNPACK_PREMULTIPLY_ALPHA_WEBGL: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNPACK_COLORSPACE_CONVERSION_WEBGL: number;
-/**
- * @constant {number}
- */
-export declare const GL_READ_BUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNPACK_ROW_LENGTH: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNPACK_SKIP_ROWS: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNPACK_SKIP_PIXELS: number;
-/**
- * @constant {number}
- */
-export declare const GL_PACK_ROW_LENGTH: number;
-/**
- * @constant {number}
- */
-export declare const GL_PACK_SKIP_ROWS: number;
-/**
- * @constant {number}
- */
-export declare const GL_PACK_SKIP_PIXELS: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_BINDING_3D: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNPACK_SKIP_IMAGES: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNPACK_IMAGE_HEIGHT: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_3D_TEXTURE_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_ELEMENTS_VERTICES: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_ELEMENTS_INDICES: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_TEXTURE_LOD_BIAS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_FRAGMENT_UNIFORM_COMPONENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_VERTEX_UNIFORM_COMPONENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_ARRAY_TEXTURE_LAYERS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MIN_PROGRAM_TEXEL_OFFSET: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_PROGRAM_TEXEL_OFFSET: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_VARYING_COMPONENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAGMENT_SHADER_DERIVATIVE_HINT: number;
-/**
- * @constant {number}
- */
-export declare const GL_RASTERIZER_DISCARD: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ARRAY_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_VERTEX_OUTPUT_COMPONENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_FRAGMENT_INPUT_COMPONENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_SERVER_WAIT_TIMEOUT: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_ELEMENT_INDEX: number;
-/**
- * @constant {number}
- */
-export declare const GL_RED: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB8: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA8: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB10_A2: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_3D: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_WRAP_R: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_MIN_LOD: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_MAX_LOD: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_BASE_LEVEL: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_MAX_LEVEL: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_COMPARE_MODE: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_COMPARE_FUNC: number;
-/**
- * @constant {number}
- */
-export declare const GL_SRGB: number;
-/**
- * @constant {number}
- */
-export declare const GL_SRGB8: number;
-/**
- * @constant {number}
- */
-export declare const GL_SRGB8_ALPHA8: number;
-/**
- * @constant {number}
- */
-export declare const GL_COMPARE_REF_TO_TEXTURE: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA32F: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB32F: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA16F: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB16F: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_2D_ARRAY: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_BINDING_2D_ARRAY: number;
-/**
- * @constant {number}
- */
-export declare const GL_R11F_G11F_B10F: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB9_E5: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA32UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB32UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA16UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB16UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA8UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB8UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA32I: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB32I: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA16I: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB16I: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA8I: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB8I: number;
-/**
- * @constant {number}
- */
-export declare const GL_RED_INTEGER: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB_INTEGER: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA_INTEGER: number;
-/**
- * @constant {number}
- */
-export declare const GL_R8: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG8: number;
-/**
- * @constant {number}
- */
-export declare const GL_R16F: number;
-/**
- * @constant {number}
- */
-export declare const GL_R32F: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG16F: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG32F: number;
-/**
- * @constant {number}
- */
-export declare const GL_R8I: number;
-/**
- * @constant {number}
- */
-export declare const GL_R8UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_R16I: number;
-/**
- * @constant {number}
- */
-export declare const GL_R16UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_R32I: number;
-/**
- * @constant {number}
- */
-export declare const GL_R32UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG8I: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG8UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG16I: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG16UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG32I: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG32UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_R8_SNORM: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG8_SNORM: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB8_SNORM: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGBA8_SNORM: number;
-/**
- * @constant {number}
- */
-export declare const GL_RGB10_A2UI: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_IMMUTABLE_FORMAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_TEXTURE_IMMUTABLE_LEVELS: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_2_10_10_10_REV: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_10F_11F_11F_REV: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_5_9_9_9_REV: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_32_UNSIGNED_INT_24_8_REV: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_24_8: number;
-/**
- * @constant {number}
- */
-export declare const GL_HALF_FLOAT: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG: number;
-/**
- * @constant {number}
- */
-export declare const GL_RG_INTEGER: number;
-/**
- * @constant {number}
- */
-export declare const GL_INT_2_10_10_10_REV: number;
-/**
- * @constant {number}
- */
-export declare const GL_CURRENT_QUERY: number;
-/**
- * @constant {number}
- */
-export declare const GL_QUERY_RESULT: number;
-/**
- * @constant {number}
- */
-export declare const GL_QUERY_RESULT_AVAILABLE: number;
-/**
- * @constant {number}
- */
-export declare const GL_ANY_SAMPLES_PASSED: number;
-/**
- * @constant {number}
- */
-export declare const GL_ANY_SAMPLES_PASSED_CONSERVATIVE: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_DRAW_BUFFERS: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER0: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER1: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER2: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER3: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER4: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER5: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER6: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER7: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER8: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER9: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER10: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER11: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER12: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER13: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER14: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER15: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_COLOR_ATTACHMENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT1: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT2: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT3: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT4: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT5: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT6: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT7: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT8: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT9: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT10: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT11: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT12: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT13: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT14: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT15: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLER_3D: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLER_2D_SHADOW: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLER_2D_ARRAY: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLER_2D_ARRAY_SHADOW: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLER_CUBE_SHADOW: number;
-/**
- * @constant {number}
- */
-export declare const GL_INT_SAMPLER_2D: number;
-/**
- * @constant {number}
- */
-export declare const GL_INT_SAMPLER_3D: number;
-/**
- * @constant {number}
- */
-export declare const GL_INT_SAMPLER_CUBE: number;
-/**
- * @constant {number}
- */
-export declare const GL_INT_SAMPLER_2D_ARRAY: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_SAMPLER_2D: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_SAMPLER_3D: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_SAMPLER_CUBE: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_SAMPLER_2D_ARRAY: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_SAMPLES: number;
-/**
- * @constant {number}
- */
-export declare const GL_SAMPLER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_PIXEL_PACK_BUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_PIXEL_UNPACK_BUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_PIXEL_PACK_BUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_PIXEL_UNPACK_BUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_COPY_READ_BUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_COPY_WRITE_BUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_COPY_READ_BUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_COPY_WRITE_BUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_MAT2X3: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_MAT2X4: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_MAT3X2: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_MAT3X4: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_MAT4X2: number;
-/**
- * @constant {number}
- */
-export declare const GL_FLOAT_MAT4X3: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_VEC2: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_VEC3: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_VEC4: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_NORMALIZED: number;
-/**
- * @constant {number}
- */
-export declare const GL_SIGNED_NORMALIZED: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_INTEGER: number;
-/**
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_DIVISOR: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_BUFFER_MODE: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_VARYINGS: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_BUFFER_START: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_BUFFER_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS: number;
-/**
- * @constant {number}
- */
-export declare const GL_INTERLEAVED_ATTRIBS: number;
-/**
- * @constant {number}
- */
-export declare const GL_SEPARATE_ATTRIBS: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_BUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_BUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_PAUSED: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_ACTIVE: number;
-/**
- * @constant {number}
- */
-export declare const GL_TRANSFORM_FEEDBACK_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_DEFAULT: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH24_STENCIL8: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_FRAMEBUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_READ_FRAMEBUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_DRAW_FRAMEBUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_READ_FRAMEBUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_RENDERBUFFER_SAMPLES: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BUFFER: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BUFFER_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BUFFER_START: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BUFFER_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_VERTEX_UNIFORM_BLOCKS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_FRAGMENT_UNIFORM_BLOCKS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_COMBINED_UNIFORM_BLOCKS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_UNIFORM_BUFFER_BINDINGS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_UNIFORM_BLOCK_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT: number;
-/**
- * @constant {number}
- */
-export declare const GL_ACTIVE_UNIFORM_BLOCKS: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_TYPE: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BLOCK_INDEX: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_OFFSET: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_ARRAY_STRIDE: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_MATRIX_STRIDE: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_IS_ROW_MAJOR: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BLOCK_BINDING: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BLOCK_DATA_SIZE: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER: number;
-/**
- * @constant {number}
- */
-export declare const GL_OBJECT_TYPE: number;
-/**
- * @constant {number}
- */
-export declare const GL_SYNC_CONDITION: number;
-/**
- * @constant {number}
- */
-export declare const GL_SYNC_STATUS: number;
-/**
- * @constant {number}
- */
-export declare const GL_SYNC_FLAGS: number;
-/**
- * @constant {number}
- */
-export declare const GL_SYNC_FENCE: number;
-/**
- * @constant {number}
- */
-export declare const GL_SYNC_GPU_COMMANDS_COMPLETE: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNALED: number;
-/**
- * @constant {number}
- */
-export declare const GL_SIGNALED: number;
-/**
- * @constant {number}
- */
-export declare const GL_ALREADY_SIGNALED: number;
-/**
- * @constant {number}
- */
-export declare const GL_TIMEOUT_EXPIRED: number;
-/**
- * @constant {number}
- */
-export declare const GL_CONDITION_SATISFIED: number;
-/**
- * @constant {number}
- */
-export declare const GL_WAIT_FAILED: number;
-/**
- * @constant {number}
- */
-export declare const GL_SYNC_FLUSH_COMMANDS_BIT: number;
-/**
- * @constant {number}
- */
-export declare const GL_COLOR: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH: number;
-/**
- * @constant {number}
- */
-export declare const GL_STENCIL: number;
-/**
- * @constant {number}
- */
-export declare const GL_MIN: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH_COMPONENT24: number;
-/**
- * @constant {number}
- */
-export declare const GL_STREAM_READ: number;
-/**
- * @constant {number}
- */
-export declare const GL_STREAM_COPY: number;
-/**
- * @constant {number}
- */
-export declare const GL_STATIC_READ: number;
-/**
- * @constant {number}
- */
-export declare const GL_STATIC_COPY: number;
-/**
- * @constant {number}
- */
-export declare const GL_DYNAMIC_READ: number;
-/**
- * @constant {number}
- */
-export declare const GL_DYNAMIC_COPY: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH_COMPONENT32F: number;
-/**
- * @constant {number}
- */
-export declare const GL_DEPTH32F_STENCIL8: number;
-/**
- * @constant {number}
- */
-export declare const GL_INVALID_INDEX: number;
-/**
- * @constant {number}
- */
-export declare const GL_TIMEOUT_IGNORED: number;
-/**
- * @constant {number}
- */
-export declare const GL_MAX_CLIENT_WAIT_TIMEOUT_WEBGL: number;
-/**
- * Describes the frequency divisor used for instanced rendering
- * @constant {number}
- */
-export declare const GL_VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE: number;
-/**
- * Passed to getParameter to get the vendor string of the graphics driver
- * @constant {number}
- */
-export declare const GL_UNMASKED_VENDOR_WEBGL: number;
-/**
- * Passed to getParameter to get the renderer string of the graphics driver
- * @constant {number}
- */
-export declare const GL_UNMASKED_RENDERER_WEBGL: number;
-/**
- * Returns the maximum available anisotropy
- * @constant {number}
- */
-export declare const GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT: number;
-/**
- * Passed to texParameter to set the desired maximum anisotropy for a texture
- * @constant {number}
- */
-export declare const GL_TEXTURE_MAX_ANISOTROPY_EXT: number;
-/**
- * A DXT1-compressed image in an RGB image format
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGB_S3TC_DXT1_EXT: number;
-/**
- * A DXT1-compressed image in an RGB image format with a simple on/off alpha value
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_S3TC_DXT1_EXT: number;
-/**
- * A DXT3-compressed image in an RGBA image format. Compared to a 32-bit RGBA texture, it offers 4:1 compression
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_S3TC_DXT3_EXT: number;
-/**
- * A DXT5-compressed image in an RGBA image format. It also provides a 4:1 compression, but differs to the DXT3 compression in how the alpha compression is done
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_S3TC_DXT5_EXT: number;
-/**
- * A DXT1-compressed image in an sRGB image format
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB_S3TC_DXT1_EXT: number;
-/**
- * A DXT1-compressed image in an sRGB image format with a simple on/off alpha value
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: number;
-/**
- * A DXT3-compressed image in an sRGBA image format
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: number;
-/**
- * A DXT5-compressed image in an sRGBA image format
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT: number;
-/**
- * One-channel (red) unsigned format compression
- * @constant {number}
- */
-export declare const GL_COMPRESSED_R11_EAC: number;
-/**
- * One-channel (red) signed format compression
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SIGNED_R11_EAC: number;
-/**
- * Two-channel (red and green) unsigned format compression
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RG11_EAC: number;
-/**
- * Two-channel (red and green) signed format compression
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SIGNED_RG11_EAC: number;
-/**
- * Compresses RBG8 data with no alpha channel
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGB8_ETC2: number;
-/**
- * Compresses RGBA8 data. The RGB part is encoded the same as RGB_ETC2, but the alpha part is encoded separately
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA8_ETC2_EAC: number;
-/**
- * Compresses sRBG8 data with no alpha channel
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ETC2: number;
-/**
- * Compresses sRGBA8 data. The sRGB part is encoded the same as SRGB_ETC2, but the alpha part is encoded separately
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC: number;
-/**
- * Similar to RGB8_ETC, but with ability to punch through the alpha channel, which means to make it completely opaque or transparent
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2: number;
-/**
- * Similar to SRGB8_ETC, but with ability to punch through the alpha channel, which means to make it completely opaque or transparent
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2: number;
-/**
- * RGB compression in 4-bit mode. One block for each 4×4 pixels
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG: number;
-/**
- * RGBA compression in 4-bit mode. One block for each 4×4 pixels
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG: number;
-/**
- * RGB compression in 2-bit mode. One block for each 8×4 pixels
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG: number;
-/**
- * RGBA compression in 2-bit mode. One block for each 8×4 pixels
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG: number;
-/**
- * Compresses 24-bit RGB data with no alpha channel
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGB_ETC1_WEBGL: number;
-/**
- * Compresses RGB textures with no alpha channel
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGB_ATC_WEBGL: number;
-/**
- * Compresses RGBA textures using explicit alpha encoding (useful when alpha transitions are sharp)
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ATC_EXPLICIT_ALPHA_WEBGL: number;
-/**
- * Compresses RGBA textures using interpolated alpha encoding (useful when alpha transitions are gradient)
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ATC_INTERPOLATED_ALPHA_WEBGL: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 4x4
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_4X4_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 5x4
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_5X4_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 5x5
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_5X5_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 6x5
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_6X5_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 6x6
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_6X6_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 8x5
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_8X5_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 8x6
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_8X6_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 8x8
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_8X8_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 10x5
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_10X5_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 10x6
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_10X6_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 10x8
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_10X8_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 10x10
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_10X10_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 12x10
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_12X10_KHR: number;
-/**
- * Compresses RGBA textures using ASTC compression in a blocksize of 12x12
- * @constant {number}
- */
-export declare const GL_COMPRESSED_RGBA_ASTC_12X12_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 4x4
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4X4_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 5x4
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5X4_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 5x5
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5X5_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 6x5
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6X5_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 6x6
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6X6_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 8x5
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8X5_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 8x6
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8X6_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 8x8
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8X8_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 10x5
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10X5_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 10x6
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10X6_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 10x8
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10X8_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 10x10
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10X10_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 12x10
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12X10_KHR: number;
-/**
- * Compresses SRGB8 textures using ASTC compression in a blocksize of 12x12
- * @constant {number}
- */
-export declare const GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12X12_KHR: number;
-/**
- * Unsigned integer type for 24-bit depth texture data
- * @constant {number}
- */
-export declare const GL_UNSIGNED_INT_24_8_WEBGL: number;
-/**
- * Half floating-point type (16-bit)
- * @constant {number}
- */
-export declare const GL_HALF_FLOAT_OES: number;
-/**
- * RGBA 32-bit floating-point color-renderable format
- * @constant {number}
- */
-export declare const GL_RGBA32F_EXT: number;
-/**
- * RGB 32-bit floating-point color-renderable format
- * @constant {number}
- */
-export declare const GL_RGB32F_EXT: number;
-/**
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: number;
-/**
- * @constant {number}
- */
-export declare const GL_UNSIGNED_NORMALIZED_EXT: number;
-/**
- * Produces the minimum color components of the source and destination colors
- * @constant {number}
- */
-export declare const GL_MIN_EXT: number;
-/**
- * Produces the maximum color components of the source and destination colors
- * @constant {number}
- */
-export declare const GL_MAX_EXT: number;
-/**
- * Unsized sRGB format that leaves the precision up to the driver
- * @constant {number}
- */
-export declare const GL_SRGB_EXT: number;
-/**
- * Unsized sRGB format with unsized alpha component
- * @constant {number}
- */
-export declare const GL_SRGB_ALPHA_EXT: number;
-/**
- * Sized (8-bit) sRGB and alpha formats
- * @constant {number}
- */
-export declare const GL_SRGB8_ALPHA8_EXT: number;
-/**
- * Returns the framebuffer color encoding
- * @constant {number}
- */
-export declare const GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING_EXT: number;
-/**
- * Indicates the accuracy of the derivative calculation for the GLSL built-in functions: dFdx, dFdy, and fwidth
- * @constant {number}
- */
-export declare const GL_FRAGMENT_SHADER_DERIVATIVE_HINT_OES: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT0_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT1_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT2_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT3_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT4_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT5_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT6_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT7_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT8_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT9_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT10_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT11_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT12_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT13_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT14_WEBGL: number;
-/**
- * Framebuffer color attachment point
- * @constant {number}
- */
-export declare const GL_COLOR_ATTACHMENT15_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER0_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER1_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER2_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER3_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER4_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER5_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER6_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER7_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER8_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER9_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER10_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER11_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER12_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER13_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER14_WEBGL: number;
-/**
- * Draw buffer
- * @constant {number}
- */
-export declare const GL_DRAW_BUFFER15_WEBGL: number;
-/**
- * Maximum number of framebuffer color attachment points
- * @constant {number}
- */
-export declare const GL_MAX_COLOR_ATTACHMENTS_WEBGL: number;
-/**
- * Maximum number of draw buffers
- * @constant {number}
- */
-export declare const GL_MAX_DRAW_BUFFERS_WEBGL: number;
-/**
- * The bound vertex array object (VAO)
- * @constant {number}
- */
-export declare const GL_VERTEX_ARRAY_BINDING_OES: number;
-/**
- * The number of bits used to hold the query result for the given target
- * @constant {number}
- */
-export declare const GL_QUERY_COUNTER_BITS_EXT: number;
-/**
- * The currently active query
- * @constant {number}
- */
-export declare const GL_CURRENT_QUERY_EXT: number;
-/**
- * The query result
- * @constant {number}
- */
-export declare const GL_QUERY_RESULT_EXT: number;
-/**
- * A Boolean indicating whether or not a query result is available
- * @constant {number}
- */
-export declare const GL_QUERY_RESULT_AVAILABLE_EXT: number;
-/**
- * Elapsed time (in nanoseconds)
- * @constant {number}
- */
-export declare const GL_TIME_ELAPSED_EXT: number;
-/**
- * The current time
- * @constant {number}
- */
-export declare const GL_TIMESTAMP_EXT: number;
-/**
- * A Boolean indicating whether or not the GPU performed any disjoint operation
- * @constant {number}
- */
-export declare const GL_GPU_DISJOINT_EXT: number;
-/**
- * Query to determine if the compilation process is complete
- * @constant {number}
- */
-export declare const GL_COMPLETION_STATUS_KHR: number;
+ * Options for compressing data into a DEFLATE format
+ */
+export interface DeflateOptions {
+    /**
+     * The level of compression to use, ranging from 0-9.
+     *
+     * 0 will store the data without compression.
+     * 1 is fastest but compresses the worst, 9 is slowest but compresses the best.
+     * The default level is 6.
+     *
+     * Typically, binary data benefits much more from higher values than text data.
+     * In both cases, higher values usually take disproportionately longer than the reduction in final size that results.
+     *
+     * For example, a 1 MB text file could:
+     * - become 1.01 MB with level 0 in 1ms
+     * - become 400 kB with level 1 in 10ms
+     * - become 320 kB with level 9 in 100ms
+     */
+    level?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+    /**
+     * The memory level to use, ranging from 0-12. Increasing this increases speed and compression ratio at the cost of memory.
+     *
+     * Note that this is exponential: while level 0 uses 4 kB, level 4 uses 64 kB, level 8 uses 1 MB, and level 12 uses 16 MB.
+     * It is recommended not to lower the value below 4, since that tends to hurt performance.
+     * In addition, values above 8 tend to help very little on most data and can even hurt performance.
+     *
+     * The default value is automatically determined based on the size of the input data.
+     */
+    mem?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+}
+/**
+ * Options for compressing data into a GZIP format
+ */
+export interface GzipOptions extends DeflateOptions {
+    /**
+     * When the file was last modified. Defaults to the current time.
+     * Set this to 0 to avoid revealing a modification date entirely.
+     */
+    mtime?: Date | string | number;
+    /**
+     * The filename of the data. If the `gunzip` command is used to decompress the data, it will output a file
+     * with this name instead of the name of the compressed file.
+     */
+    filename?: string;
+}
+/**
+ * Options for compressing data into a Zlib format
+ */
+export interface ZlibOptions extends DeflateOptions {
+}
+/**
+ * Handler for data (de)compression streams
+ * @param data The data output from the stream processor
+ * @param final Whether this is the final block
+ */
+export declare type FlateStreamHandler = (data: Uint8Array, final: boolean) => void;
+/**
+ * Handler for asynchronous data (de)compression streams
+ * @param err Any error that occurred
+ * @param data The data output from the stream processor
+ * @param final Whether this is the final block
+ */
+export declare type AsyncFlateStreamHandler = (err: Error, data: Uint8Array, final: boolean) => void;
+/**
+ * Callback for asynchronous (de)compression methods
+ * @param err Any error that occurred
+ * @param data The resulting data. Only present if `err` is null
+ */
+export declare type FlateCallback = (err: Error | string, data: Uint8Array) => void;
+interface AsyncOptions {
+    /**
+     * Whether or not to "consume" the source data. This will make the typed array/buffer you pass in
+     * unusable but will increase performance and reduce memory usage.
+     */
+    consume?: boolean;
+}
+/**
+ * Options for compressing data asynchronously into a DEFLATE format
+ */
+export interface AsyncDeflateOptions extends DeflateOptions, AsyncOptions {
+}
+/**
+ * Options for decompressing DEFLATE data asynchronously
+ */
+export interface AsyncInflateOptions extends AsyncOptions {
+    /**
+     * The original size of the data. Currently, the asynchronous API disallows
+     * writing into a buffer you provide; the best you can do is provide the
+     * size in bytes and be given back a new typed array.
+     */
+    size?: number;
+}
+/**
+ * Options for compressing data asynchronously into a GZIP format
+ */
+export interface AsyncGzipOptions extends GzipOptions, AsyncOptions {
+}
+/**
+ * Options for decompressing GZIP data asynchronously
+ */
+export interface AsyncGunzipOptions extends AsyncOptions {
+}
+/**
+ * Options for compressing data asynchronously into a Zlib format
+ */
+export interface AsyncZlibOptions extends ZlibOptions, AsyncOptions {
+}
+/**
+ * Options for decompressing Zlib data asynchronously
+ */
+export interface AsyncUnzlibOptions extends AsyncInflateOptions {
+}
+/**
+ * A terminable compression/decompression process
+ */
+export interface AsyncTerminable {
+    /**
+     * Terminates the worker thread immediately. The callback will not be called.
+     */
+    (): void;
+}
+/**
+ * Streaming DEFLATE compression
+ */
+export declare class Deflate {
+    /**
+     * Creates a DEFLATE stream
+     * @param opts The compression options
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(opts: DeflateOptions, cb?: FlateStreamHandler);
+    constructor(cb?: FlateStreamHandler);
+    private o;
+    private d;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: FlateStreamHandler;
+    private p;
+    /**
+     * Pushes a chunk to be deflated
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+}
+/**
+ * Asynchronous streaming DEFLATE compression
+ */
+export declare class AsyncDeflate {
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * Creates an asynchronous DEFLATE stream
+     * @param opts The compression options
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(opts: DeflateOptions, cb?: AsyncFlateStreamHandler);
+    /**
+     * Creates an asynchronous DEFLATE stream
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(cb?: AsyncFlateStreamHandler);
+    /**
+     * Pushes a chunk to be deflated
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+    /**
+     * A method to terminate the stream's internal worker. Subsequent calls to
+     * push() will silently fail.
+     */
+    terminate: AsyncTerminable;
+}
+/**
+ * Asynchronously compresses data with DEFLATE without any wrapper
+ * @param data The data to compress
+ * @param opts The compression options
+ * @param cb The function to be called upon compression completion
+ * @returns A function that can be used to immediately terminate the compression
+ */
+export declare function deflate(data: Uint8Array, opts: AsyncDeflateOptions, cb: FlateCallback): AsyncTerminable;
+/**
+ * Asynchronously compresses data with DEFLATE without any wrapper
+ * @param data The data to compress
+ * @param cb The function to be called upon compression completion
+ */
+export declare function deflate(data: Uint8Array, cb: FlateCallback): AsyncTerminable;
+/**
+ * Compresses data with DEFLATE without any wrapper
+ * @param data The data to compress
+ * @param opts The compression options
+ * @returns The deflated version of the data
+ */
+export declare function deflateSync(data: Uint8Array, opts?: DeflateOptions): Uint8Array;
+/**
+ * Streaming DEFLATE decompression
+ */
+export declare class Inflate {
+    /**
+     * Creates an inflation stream
+     * @param cb The callback to call whenever data is inflated
+     */
+    constructor(cb?: FlateStreamHandler);
+    private s;
+    private o;
+    private p;
+    private d;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: FlateStreamHandler;
+    private e;
+    private c;
+    /**
+     * Pushes a chunk to be inflated
+     * @param chunk The chunk to push
+     * @param final Whether this is the final chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+}
+/**
+ * Asynchronous streaming DEFLATE decompression
+ */
+export declare class AsyncInflate {
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * Creates an asynchronous inflation stream
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(cb?: AsyncFlateStreamHandler);
+    /**
+     * Pushes a chunk to be inflated
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+    /**
+     * A method to terminate the stream's internal worker. Subsequent calls to
+     * push() will silently fail.
+     */
+    terminate: AsyncTerminable;
+}
+/**
+ * Asynchronously expands DEFLATE data with no wrapper
+ * @param data The data to decompress
+ * @param opts The decompression options
+ * @param cb The function to be called upon decompression completion
+ * @returns A function that can be used to immediately terminate the decompression
+ */
+export declare function inflate(data: Uint8Array, opts: AsyncInflateOptions, cb: FlateCallback): AsyncTerminable;
+/**
+ * Asynchronously expands DEFLATE data with no wrapper
+ * @param data The data to decompress
+ * @param cb The function to be called upon decompression completion
+ * @returns A function that can be used to immediately terminate the decompression
+ */
+export declare function inflate(data: Uint8Array, cb: FlateCallback): AsyncTerminable;
+/**
+ * Expands DEFLATE data with no wrapper
+ * @param data The data to decompress
+ * @param out Where to write the data. Saves memory if you know the decompressed size and provide an output buffer of that length.
+ * @returns The decompressed version of the data
+ */
+export declare function inflateSync(data: Uint8Array, out?: Uint8Array): Uint8Array;
+/**
+ * Streaming GZIP compression
+ */
+export declare class Gzip {
+    private c;
+    private l;
+    private v;
+    private o;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: FlateStreamHandler;
+    /**
+     * Creates a GZIP stream
+     * @param opts The compression options
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(opts: GzipOptions, cb?: FlateStreamHandler);
+    /**
+     * Creates a GZIP stream
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(cb?: FlateStreamHandler);
+    /**
+     * Pushes a chunk to be GZIPped
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+    private p;
+}
+/**
+ * Asynchronous streaming GZIP compression
+ */
+export declare class AsyncGzip {
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * Creates an asynchronous GZIP stream
+     * @param opts The compression options
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(opts: GzipOptions, cb?: AsyncFlateStreamHandler);
+    /**
+     * Creates an asynchronous GZIP stream
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(cb?: AsyncFlateStreamHandler);
+    /**
+     * Pushes a chunk to be GZIPped
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+    /**
+     * A method to terminate the stream's internal worker. Subsequent calls to
+     * push() will silently fail.
+     */
+    terminate: AsyncTerminable;
+}
+/**
+ * Asynchronously compresses data with GZIP
+ * @param data The data to compress
+ * @param opts The compression options
+ * @param cb The function to be called upon compression completion
+ * @returns A function that can be used to immediately terminate the compression
+ */
+export declare function gzip(data: Uint8Array, opts: AsyncGzipOptions, cb: FlateCallback): AsyncTerminable;
+/**
+ * Asynchronously compresses data with GZIP
+ * @param data The data to compress
+ * @param cb The function to be called upon compression completion
+ * @returns A function that can be used to immediately terminate the decompression
+ */
+export declare function gzip(data: Uint8Array, cb: FlateCallback): AsyncTerminable;
+/**
+ * Compresses data with GZIP
+ * @param data The data to compress
+ * @param opts The compression options
+ * @returns The gzipped version of the data
+ */
+export declare function gzipSync(data: Uint8Array, opts?: GzipOptions): Uint8Array;
+/**
+ * Streaming GZIP decompression
+ */
+export declare class Gunzip {
+    private v;
+    private p;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: FlateStreamHandler;
+    /**
+     * Creates a GUNZIP stream
+     * @param cb The callback to call whenever data is inflated
+     */
+    constructor(cb?: FlateStreamHandler);
+    /**
+     * Pushes a chunk to be GUNZIPped
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+}
+/**
+ * Asynchronous streaming GZIP decompression
+ */
+export declare class AsyncGunzip {
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * Creates an asynchronous GUNZIP stream
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(cb?: AsyncFlateStreamHandler);
+    /**
+     * Pushes a chunk to be GUNZIPped
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+    /**
+     * A method to terminate the stream's internal worker. Subsequent calls to
+     * push() will silently fail.
+     */
+    terminate: AsyncTerminable;
+}
+/**
+ * Asynchronously expands GZIP data
+ * @param data The data to decompress
+ * @param opts The decompression options
+ * @param cb The function to be called upon decompression completion
+ * @returns A function that can be used to immediately terminate the decompression
+ */
+export declare function gunzip(data: Uint8Array, opts: AsyncGunzipOptions, cb: FlateCallback): AsyncTerminable;
+/**
+ * Asynchronously expands GZIP data
+ * @param data The data to decompress
+ * @param cb The function to be called upon decompression completion
+ * @returns A function that can be used to immediately terminate the decompression
+ */
+export declare function gunzip(data: Uint8Array, cb: FlateCallback): AsyncTerminable;
+/**
+ * Expands GZIP data
+ * @param data The data to decompress
+ * @param out Where to write the data. GZIP already encodes the output size, so providing this doesn't save memory.
+ * @returns The decompressed version of the data
+ */
+export declare function gunzipSync(data: Uint8Array, out?: Uint8Array): Uint8Array;
+/**
+ * Streaming Zlib compression
+ */
+export declare class Zlib {
+    private c;
+    private v;
+    private o;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: FlateStreamHandler;
+    /**
+     * Creates a Zlib stream
+     * @param opts The compression options
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(opts: ZlibOptions, cb?: FlateStreamHandler);
+    /**
+     * Creates a Zlib stream
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(cb?: FlateStreamHandler);
+    /**
+     * Pushes a chunk to be zlibbed
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+    private p;
+}
+/**
+ * Asynchronous streaming Zlib compression
+ */
+export declare class AsyncZlib {
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * Creates an asynchronous DEFLATE stream
+     * @param opts The compression options
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(opts: ZlibOptions, cb?: AsyncFlateStreamHandler);
+    /**
+     * Creates an asynchronous DEFLATE stream
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(cb?: AsyncFlateStreamHandler);
+    /**
+     * Pushes a chunk to be deflated
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+    /**
+     * A method to terminate the stream's internal worker. Subsequent calls to
+     * push() will silently fail.
+     */
+    terminate: AsyncTerminable;
+}
+/**
+ * Asynchronously compresses data with Zlib
+ * @param data The data to compress
+ * @param opts The compression options
+ * @param cb The function to be called upon compression completion
+ */
+export declare function zlib(data: Uint8Array, opts: AsyncZlibOptions, cb: FlateCallback): AsyncTerminable;
+/**
+ * Asynchronously compresses data with Zlib
+ * @param data The data to compress
+ * @param cb The function to be called upon compression completion
+ * @returns A function that can be used to immediately terminate the compression
+ */
+export declare function zlib(data: Uint8Array, cb: FlateCallback): AsyncTerminable;
+/**
+ * Compress data with Zlib
+ * @param data The data to compress
+ * @param opts The compression options
+ * @returns The zlib-compressed version of the data
+ */
+export declare function zlibSync(data: Uint8Array, opts: ZlibOptions): Uint8Array;
+/**
+ * Streaming Zlib decompression
+ */
+export declare class Unzlib {
+    private v;
+    private p;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: FlateStreamHandler;
+    /**
+     * Creates a Zlib decompression stream
+     * @param cb The callback to call whenever data is inflated
+     */
+    constructor(cb?: FlateStreamHandler);
+    /**
+     * Pushes a chunk to be unzlibbed
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+}
+/**
+ * Asynchronous streaming Zlib decompression
+ */
+export declare class AsyncUnzlib {
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * Creates an asynchronous Zlib decompression stream
+     * @param cb The callback to call whenever data is deflated
+     */
+    constructor(cb?: AsyncFlateStreamHandler);
+    /**
+     * Pushes a chunk to be decompressed from Zlib
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+    /**
+     * A method to terminate the stream's internal worker. Subsequent calls to
+     * push() will silently fail.
+     */
+    terminate: AsyncTerminable;
+}
+/**
+ * Asynchronously expands Zlib data
+ * @param data The data to decompress
+ * @param opts The decompression options
+ * @param cb The function to be called upon decompression completion
+ * @returns A function that can be used to immediately terminate the decompression
+ */
+export declare function unzlib(data: Uint8Array, opts: AsyncGunzipOptions, cb: FlateCallback): AsyncTerminable;
+/**
+ * Asynchronously expands Zlib data
+ * @param data The data to decompress
+ * @param cb The function to be called upon decompression completion
+ * @returns A function that can be used to immediately terminate the decompression
+ */
+export declare function unzlib(data: Uint8Array, cb: FlateCallback): AsyncTerminable;
+/**
+ * Expands Zlib data
+ * @param data The data to decompress
+ * @param out Where to write the data. Saves memory if you know the decompressed size and provide an output buffer of that length.
+ * @returns The decompressed version of the data
+ */
+export declare function unzlibSync(data: Uint8Array, out?: Uint8Array): Uint8Array;
+export { gzip as compress, AsyncGzip as AsyncCompress };
+export { gzipSync as compressSync, Gzip as Compress };
+/**
+ * Streaming GZIP, Zlib, or raw DEFLATE decompression
+ */
+export declare class Decompress {
+    private G;
+    private I;
+    private Z;
+    /**
+     * Creates a decompression stream
+     * @param cb The callback to call whenever data is decompressed
+     */
+    constructor(cb?: FlateStreamHandler);
+    private s;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: FlateStreamHandler;
+    private p;
+    /**
+     * Pushes a chunk to be decompressed
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+}
+/**
+ * Asynchronous streaming GZIP, Zlib, or raw DEFLATE decompression
+ */
+export declare class AsyncDecompress {
+    private G;
+    private I;
+    private Z;
+    /**
+   * Creates an asynchronous decompression stream
+   * @param cb The callback to call whenever data is decompressed
+   */
+    constructor(cb?: AsyncFlateStreamHandler);
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * Pushes a chunk to be decompressed
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+}
+/**
+ * Asynchrononously expands compressed GZIP, Zlib, or raw DEFLATE data, automatically detecting the format
+ * @param data The data to decompress
+ * @param opts The decompression options
+ * @param cb The function to be called upon decompression completion
+ * @returns A function that can be used to immediately terminate the decompression
+ */
+export declare function decompress(data: Uint8Array, opts: AsyncInflateOptions, cb: FlateCallback): AsyncTerminable;
+/**
+ * Asynchrononously expands compressed GZIP, Zlib, or raw DEFLATE data, automatically detecting the format
+ * @param data The data to decompress
+ * @param cb The function to be called upon decompression completion
+ * @returns A function that can be used to immediately terminate the decompression
+ */
+export declare function decompress(data: Uint8Array, cb: FlateCallback): AsyncTerminable;
+/**
+ * Expands compressed GZIP, Zlib, or raw DEFLATE data, automatically detecting the format
+ * @param data The data to decompress
+ * @param out Where to write the data. Saves memory if you know the decompressed size and provide an output buffer of that length.
+ * @returns The decompressed version of the data
+ */
+export declare function decompressSync(data: Uint8Array, out?: Uint8Array): Uint8Array;
+/**
+ * Attributes for files added to a ZIP archive object
+ */
+export interface ZipAttributes {
+    /**
+     * The operating system of origin for this file. The value is defined
+     * by PKZIP's APPNOTE.txt, section 4.4.2.2. For example, 0 (the default)
+     * is MS/DOS, 3 is UNIX, 19 is macOS.
+     */
+    os?: number;
+    /**
+     * The file's attributes. These are traditionally somewhat complicated
+     * and platform-dependent, so using them is scarcely necessary. However,
+     * here is a representation of what this is, bit by bit:
+     *
+     * `TTTTugtrwxrwxrwx0000000000ADVSHR`
+     *
+     * TTTT = file type (rarely useful)
+     *
+     * u = setuid, g = setgid, t = sticky
+     *
+     * rwx = user permissions, rwx = group permissions, rwx = other permissions
+     *
+     * 0000000000 = unused
+     *
+     * A = archive, D = directory, V = volume label, S = system file, H = hidden, R = read-only
+     *
+     * If you want to set the Unix permissions, for instance, just bit shift by 16, e.g. 0644 << 16
+     */
+    attrs?: number;
+    /**
+     * Extra metadata to add to the file. This field is defined by PKZIP's APPNOTE.txt,
+     * section 4.4.28. At most 65,535 bytes may be used in each ID. The ID must be an
+     * integer between 0 and 65,535, inclusive.
+     *
+     * This field is incredibly rare and almost never needed except for compliance with
+     * proprietary standards and software.
+     */
+    extra?: Record<number, Uint8Array>;
+    /**
+     * The comment to attach to the file. This field is defined by PKZIP's APPNOTE.txt,
+     * section 4.4.26. The comment must be at most 65,535 bytes long UTF-8 encoded. This
+     * field is not read by consumer software.
+     */
+    comment?: string;
+    /**
+     * When the file was last modified. Defaults to the current time.
+     */
+    mtime?: GzipOptions['mtime'];
+}
+/**
+ * Options for creating a ZIP archive
+ */
+export interface ZipOptions extends DeflateOptions, ZipAttributes {
+}
+/**
+ * Options for asynchronously creating a ZIP archive
+ */
+export interface AsyncZipOptions extends AsyncDeflateOptions, ZipAttributes {
+}
+/**
+ * Options for asynchronously expanding a ZIP archive
+ */
+export interface AsyncUnzipOptions extends AsyncOptions {
+}
+/**
+ * A file that can be used to create a ZIP archive
+ */
+export declare type ZippableFile = Uint8Array | [Uint8Array, ZipOptions];
+/**
+ * A file that can be used to asynchronously create a ZIP archive
+ */
+export declare type AsyncZippableFile = Uint8Array | [Uint8Array, AsyncZipOptions];
+/**
+ * The complete directory structure of a ZIPpable archive
+ */
+export interface Zippable {
+    [path: string]: Zippable | ZippableFile;
+}
+/**
+ * The complete directory structure of an asynchronously ZIPpable archive
+ */
+export interface AsyncZippable {
+    [path: string]: AsyncZippable | AsyncZippableFile;
+}
+/**
+ * An unzipped archive. The full path of each file is used as the key,
+ * and the file is the value
+ */
+export interface Unzipped {
+    [path: string]: Uint8Array;
+}
+/**
+ * Handler for string generation streams
+ * @param data The string output from the stream processor
+ * @param final Whether this is the final block
+ */
+export declare type StringStreamHandler = (data: string, final: boolean) => void;
+/**
+ * Callback for asynchronous ZIP decompression
+ * @param err Any error that occurred
+ * @param data The decompressed ZIP archive
+ */
+export declare type UnzipCallback = (err: Error | string, data: Unzipped) => void;
+/**
+ * Handler for streaming ZIP decompression
+ * @param file The file that was found in the archive
+ */
+export declare type UnzipFileHandler = (file: UnzipFile) => void;
+/**
+ * Streaming UTF-8 decoding
+ */
+export declare class DecodeUTF8 {
+    private p;
+    private t;
+    /**
+     * Creates a UTF-8 decoding stream
+     * @param cb The callback to call whenever data is decoded
+     */
+    constructor(cb?: StringStreamHandler);
+    /**
+     * Pushes a chunk to be decoded from UTF-8 binary
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: StringStreamHandler;
+}
+/**
+ * Streaming UTF-8 encoding
+ */
+export declare class EncodeUTF8 {
+    private d;
+    /**
+     * Creates a UTF-8 decoding stream
+     * @param cb The callback to call whenever data is encoded
+     */
+    constructor(cb?: FlateStreamHandler);
+    /**
+     * Pushes a chunk to be encoded to UTF-8
+     * @param chunk The string data to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: string, final?: boolean): void;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: FlateStreamHandler;
+}
+/**
+ * Converts a string into a Uint8Array for use with compression/decompression methods
+ * @param str The string to encode
+ * @param latin1 Whether or not to interpret the data as Latin-1. This should
+ *               not need to be true unless decoding a binary string.
+ * @returns The string encoded in UTF-8/Latin-1 binary
+ */
+export declare function strToU8(str: string, latin1?: boolean): Uint8Array;
+/**
+ * Converts a Uint8Array to a string
+ * @param dat The data to decode to string
+ * @param latin1 Whether or not to interpret the data as Latin-1. This should
+ *               not need to be true unless encoding to binary string.
+ * @returns The original UTF-8/Latin-1 string
+ */
+export declare function strFromU8(dat: Uint8Array, latin1?: boolean): string;
+/**
+ * A stream that can be used to create a file in a ZIP archive
+ */
+export interface ZipInputFile extends ZipAttributes {
+    /**
+     * The filename to associate with the data provided to this stream. If you
+     * want a file in a subdirectory, use forward slashes as a separator (e.g.
+     * `directory/filename.ext`). This will still work on Windows.
+     */
+    filename: string;
+    /**
+     * The size of the file in bytes. This attribute may be invalid after
+     * the file is added to the ZIP archive; it must be correct only before the
+     * stream completes.
+     *
+     * If you don't want to have to compute this yourself, consider extending the
+     * ZipPassThrough class and overriding its process() method, or using one of
+     * ZipDeflate or AsyncZipDeflate.
+     */
+    size: number;
+    /**
+     * A CRC of the original file contents. This attribute may be invalid after
+     * the file is added to the ZIP archive; it must be correct only before the
+     * stream completes.
+     *
+     * If you don't want to have to generate this yourself, consider extending the
+     * ZipPassThrough class and overriding its process() method, or using one of
+     * ZipDeflate or AsyncZipDeflate.
+     */
+    crc: number;
+    /**
+     * The compression format for the data stream. This number is determined by
+     * the spec in PKZIP's APPNOTE.txt, section 4.4.5. For example, 0 = no
+     * compression, 8 = deflate, 14 = LZMA
+     */
+    compression: number;
+    /**
+     * Bits 1 and 2 of the general purpose bit flag, specified in PKZIP's
+     * APPNOTE.txt, section 4.4.4. Should be between 0 and 3. This is unlikely
+     * to be necessary.
+     */
+    flag?: number;
+    /**
+     * The handler to be called when data is added. After passing this stream to
+     * the ZIP file object, this handler will always be defined. To call it:
+     *
+     * `stream.ondata(error, chunk, final)`
+     *
+     * error = any error that occurred (null if there was no error)
+     *
+     * chunk = a Uint8Array of the data that was added (null if there was an
+     * error)
+     *
+     * final = boolean, whether this is the final chunk in the stream
+     */
+    ondata?: AsyncFlateStreamHandler;
+    /**
+     * A method called when the stream is no longer needed, for clean-up
+     * purposes. This will not always be called after the stream completes,
+     * so you may wish to call this.terminate() after the final chunk is
+     * processed if you have clean-up logic.
+     */
+    terminate?: AsyncTerminable;
+}
+/**
+ * A pass-through stream to keep data uncompressed in a ZIP archive.
+ */
+export declare class ZipPassThrough implements ZipInputFile {
+    filename: string;
+    crc: number;
+    size: number;
+    compression: number;
+    os?: number;
+    attrs?: number;
+    comment?: string;
+    extra?: Record<number, Uint8Array>;
+    mtime?: GzipOptions['mtime'];
+    ondata: AsyncFlateStreamHandler;
+    private c;
+    /**
+     * Creates a pass-through stream that can be added to ZIP archives
+     * @param filename The filename to associate with this data stream
+     */
+    constructor(filename: string);
+    /**
+     * Processes a chunk and pushes to the output stream. You can override this
+     * method in a subclass for custom behavior, but by default this passes
+     * the data through. You must call this.ondata(err, chunk, final) at some
+     * point in this method.
+     * @param chunk The chunk to process
+     * @param final Whether this is the last chunk
+     */
+    protected process(chunk: Uint8Array, final: boolean): void;
+    /**
+     * Pushes a chunk to be added. If you are subclassing this with a custom
+     * compression algorithm, note that you must push data from the source
+     * file only, pre-compression.
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+}
+/**
+ * Streaming DEFLATE compression for ZIP archives. Prefer using AsyncZipDeflate
+ * for better performance
+ */
+export declare class ZipDeflate implements ZipInputFile {
+    filename: string;
+    crc: number;
+    size: number;
+    compression: number;
+    flag: 0 | 1 | 2 | 3;
+    os?: number;
+    attrs?: number;
+    comment?: string;
+    extra?: Record<number, Uint8Array>;
+    mtime?: GzipOptions['mtime'];
+    ondata: AsyncFlateStreamHandler;
+    private d;
+    /**
+     * Creates a DEFLATE stream that can be added to ZIP archives
+     * @param filename The filename to associate with this data stream
+     * @param opts The compression options
+     */
+    constructor(filename: string, opts?: DeflateOptions);
+    process(chunk: Uint8Array, final: boolean): void;
+    /**
+     * Pushes a chunk to be deflated
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+}
+/**
+ * Asynchronous streaming DEFLATE compression for ZIP archives
+ */
+export declare class AsyncZipDeflate implements ZipInputFile {
+    filename: string;
+    crc: number;
+    size: number;
+    compression: number;
+    flag: 0 | 1 | 2 | 3;
+    os?: number;
+    attrs?: number;
+    comment?: string;
+    extra?: Record<number, Uint8Array>;
+    mtime?: GzipOptions['mtime'];
+    ondata: AsyncFlateStreamHandler;
+    private d;
+    terminate: AsyncTerminable;
+    /**
+     * Creates a DEFLATE stream that can be added to ZIP archives
+     * @param filename The filename to associate with this data stream
+     * @param opts The compression options
+     */
+    constructor(filename: string, opts?: DeflateOptions);
+    process(chunk: Uint8Array, final: boolean): void;
+    /**
+     * Pushes a chunk to be deflated
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): void;
+}
+/**
+ * A zippable archive to which files can incrementally be added
+ */
+export declare class Zip {
+    private u;
+    private d;
+    /**
+     * Creates an empty ZIP archive to which files can be added
+     * @param cb The callback to call whenever data for the generated ZIP archive
+     *           is available
+     */
+    constructor(cb?: AsyncFlateStreamHandler);
+    /**
+     * Adds a file to the ZIP archive
+     * @param file The file stream to add
+     */
+    add(file: ZipInputFile): void;
+    /**
+     * Ends the process of adding files and prepares to emit the final chunks.
+     * This *must* be called after adding all desired files for the resulting
+     * ZIP file to work properly.
+     */
+    end(): void;
+    private e;
+    /**
+     * A method to terminate any internal workers used by the stream. Subsequent
+     * calls to add() will fail.
+     */
+    terminate(): void;
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+}
+/**
+ * Asynchronously creates a ZIP file
+ * @param data The directory structure for the ZIP archive
+ * @param opts The main options, merged with per-file options
+ * @param cb The callback to call with the generated ZIP archive
+ * @returns A function that can be used to immediately terminate the compression
+ */
+export declare function zip(data: AsyncZippable, opts: AsyncZipOptions, cb: FlateCallback): AsyncTerminable;
+/**
+ * Asynchronously creates a ZIP file
+ * @param data The directory structure for the ZIP archive
+ * @param cb The callback to call with the generated ZIP archive
+ * @returns A function that can be used to immediately terminate the compression
+ */
+export declare function zip(data: AsyncZippable, cb: FlateCallback): AsyncTerminable;
+/**
+ * Synchronously creates a ZIP file. Prefer using `zip` for better performance
+ * with more than one file.
+ * @param data The directory structure for the ZIP archive
+ * @param opts The main options, merged with per-file options
+ * @returns The generated ZIP archive
+ */
+export declare function zipSync(data: Zippable, opts?: ZipOptions): Uint8Array;
+/**
+ * A decoder for files in ZIP streams
+ */
+export interface UnzipDecoder {
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * Pushes a chunk to be decompressed
+     * @param data The data in this chunk. Do not consume (detach) this data.
+     * @param final Whether this is the last chunk in the data stream
+     */
+    push(data: Uint8Array, final: boolean): void;
+    /**
+     * A method to terminate any internal workers used by the stream. Subsequent
+     * calls to push() should silently fail.
+     */
+    terminate?: AsyncTerminable;
+}
+/**
+ * A constructor for a decoder for unzip streams
+ */
+export interface UnzipDecoderConstructor {
+    /**
+     * Creates an instance of the decoder
+     * @param filename The name of the file
+     * @param size The compressed size of the file
+     * @param originalSize The original size of the file
+     */
+    new (filename: string, size?: number, originalSize?: number): UnzipDecoder;
+    /**
+     * The compression format for the data stream. This number is determined by
+     * the spec in PKZIP's APPNOTE.txt, section 4.4.5. For example, 0 = no
+     * compression, 8 = deflate, 14 = LZMA
+     */
+    compression: number;
+}
+/**
+ * Streaming file extraction from ZIP archives
+ */
+export interface UnzipFile {
+    /**
+     * The handler to call whenever data is available
+     */
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * The name of the file
+     */
+    name: string;
+    /**
+     * The compression format for the data stream. This number is determined by
+     * the spec in PKZIP's APPNOTE.txt, section 4.4.5. For example, 0 = no
+     * compression, 8 = deflate, 14 = LZMA. If start() is called but there is no
+     * decompression stream available for this method, start() will throw.
+     */
+    compression: number;
+    /**
+     * The compressed size of the file
+     */
+    size?: number;
+    /**
+     * The original size of the file
+     */
+    originalSize?: number;
+    /**
+     * Starts reading from the stream. Calling this function will always enable
+     * this stream, but ocassionally the stream will be enabled even without
+     * this being called.
+     */
+    start(): void;
+    /**
+     * A method to terminate any internal workers used by the stream. ondata
+     * will not be called any further.
+     */
+    terminate: AsyncTerminable;
+}
+/**
+ * Streaming pass-through decompression for ZIP archives
+ */
+export declare class UnzipPassThrough implements UnzipDecoder {
+    static compression: number;
+    ondata: AsyncFlateStreamHandler;
+    push(data: Uint8Array, final: boolean): void;
+}
+/**
+ * Streaming DEFLATE decompression for ZIP archives. Prefer AsyncZipInflate for
+ * better performance.
+ */
+export declare class UnzipInflate implements UnzipDecoder {
+    static compression: number;
+    private i;
+    ondata: AsyncFlateStreamHandler;
+    /**
+     * Creates a DEFLATE decompression that can be used in ZIP archives
+     */
+    constructor();
+    push(data: Uint8Array, final: boolean): void;
+}
+/**
+ * Asynchronous streaming DEFLATE decompression for ZIP archives
+ */
+export declare class AsyncUnzipInflate implements UnzipDecoder {
+    static compression: number;
+    private i;
+    ondata: AsyncFlateStreamHandler;
+    terminate: AsyncTerminable;
+    /**
+     * Creates a DEFLATE decompression that can be used in ZIP archives
+     */
+    constructor(_: string, sz?: number);
+    push(data: Uint8Array, final: boolean): void;
+}
+/**
+ * A ZIP archive decompression stream that emits files as they are discovered
+ */
+export declare class Unzip {
+    private d;
+    private c;
+    private p;
+    private k;
+    private o;
+    /**
+     * Creates a ZIP decompression stream
+     * @param cb The callback to call whenever a file in the ZIP archive is found
+     */
+    constructor(cb?: UnzipFileHandler);
+    /**
+     * Pushes a chunk to be unzipped
+     * @param chunk The chunk to push
+     * @param final Whether this is the last chunk
+     */
+    push(chunk: Uint8Array, final?: boolean): any;
+    /**
+     * Registers a decoder with the stream, allowing for files compressed with
+     * the compression type provided to be expanded correctly
+     * @param decoder The decoder constructor
+     */
+    register(decoder: UnzipDecoderConstructor): void;
+    /**
+     * The handler to call whenever a file is discovered
+     */
+    onfile: UnzipFileHandler;
+}
+/**
+ * Asynchronously decompresses a ZIP archive
+ * @param data The raw compressed ZIP file
+ * @param cb The callback to call with the decompressed files
+ * @returns A function that can be used to immediately terminate the unzipping
+ */
+export declare function unzip(data: Uint8Array, cb: UnzipCallback): AsyncTerminable;
+/**
+ * Synchronously decompresses a ZIP archive. Prefer using `unzip` for better
+ * performance with more than one file.
+ * @param data The raw compressed ZIP file
+ * @returns The decompressed files
+ */
+export declare function unzipSync(data: Uint8Array): Unzipped;

@@ -8,7 +8,16 @@
 // However, the vast majority of the codebase has diverged from UZIP.js to increase performance and reduce bundle size.
 // Sometimes 0 will appear where -1 would be more appropriate. This is because using a uint
 // is better for memory in most engines (I *think*).
-var node_worker_1 = require("./node-worker.cjs");
+var ch2 = {};
+var node_worker_1 = {};
+node_worker_1["default"] = (function (c, id, msg, transfer, cb) {
+    var w = new Worker(ch2[id] || (ch2[id] = URL.createObjectURL(new Blob([c], { type: 'text/javascript' }))));
+    w.onerror = function (e) { return cb(e.error, null); };
+    w.onmessage = function (e) { return cb(null, e.data); };
+    w.postMessage(msg, transfer);
+    return w;
+});
+
 // aliases for shorter compressed code (most minifers don't do this)
 var u8 = Uint8Array, u16 = Uint16Array, u32 = Uint32Array;
 // fixed length extra bits
