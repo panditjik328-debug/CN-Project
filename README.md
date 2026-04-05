@@ -1,466 +1,204 @@
-<!--
-  -- This file is auto-generated from README_js.md. Changes should be made there.
-  -->
+# yallist
+
+Yet Another Linked List
+
+There are many doubly-linked list implementations like it, but this
+one is mine.
+
+For when an array would be too big, and a Map can't be iterated in
+reverse order.
 
 
-# uuid [![CI](https://github.com/uuidjs/uuid/workflows/CI/badge.svg)](https://github.com/uuidjs/uuid/actions?query=workflow%3ACI) [![Browser](https://github.com/uuidjs/uuid/workflows/Browser/badge.svg)](https://github.com/uuidjs/uuid/actions?query=workflow%3ABrowser)
+[![Build Status](https://travis-ci.org/isaacs/yallist.svg?branch=master)](https://travis-ci.org/isaacs/yallist) [![Coverage Status](https://coveralls.io/repos/isaacs/yallist/badge.svg?service=github)](https://coveralls.io/github/isaacs/yallist)
 
-For the creation of [RFC4122](https://www.ietf.org/rfc/rfc4122.txt) UUIDs
-
-- **Complete** - Support for RFC4122 version 1, 3, 4, and 5 UUIDs
-- **Cross-platform** - Support for ...
-  - CommonJS, [ECMAScript Modules](#ecmascript-modules) and [CDN builds](#cdn-builds)
-  - NodeJS 12+ ([LTS releases](https://github.com/nodejs/Release))
-  - Chrome, Safari, Firefox, Edge browsers
-  - Webpack and rollup.js module bundlers
-  - [React Native / Expo](#react-native--expo)
-- **Secure** - Cryptographically-strong random values
-- **Small** - Zero-dependency, small footprint, plays nice with "tree shaking" packagers
-- **CLI** - Includes the [`uuid` command line](#command-line) utility
-
-> **Note** Upgrading from `uuid@3`? Your code is probably okay, but check out [Upgrading From `uuid@3`](#upgrading-from-uuid3) for details.
-
-> **Note** Only interested in creating a version 4 UUID? You might be able to use [`crypto.randomUUID()`](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID), eliminating the need to install this library.
-
-## Quickstart
-
-To create a random UUID...
-
-**1. Install**
-
-```shell
-npm install uuid
-```
-
-**2. Create a UUID** (ES6 module syntax)
+## basic usage
 
 ```javascript
-import { v4 as uuidv4 } from 'uuid';
-uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+var yallist = require('yallist')
+var myList = yallist.create([1, 2, 3])
+myList.push('foo')
+myList.unshift('bar')
+// of course pop() and shift() are there, too
+console.log(myList.toArray()) // ['bar', 1, 2, 3, 'foo']
+myList.forEach(function (k) {
+  // walk the list head to tail
+})
+myList.forEachReverse(function (k, index, list) {
+  // walk the list tail to head
+})
+var myDoubledList = myList.map(function (k) {
+  return k + k
+})
+// now myDoubledList contains ['barbar', 2, 4, 6, 'foofoo']
+// mapReverse is also a thing
+var myDoubledListReverse = myList.mapReverse(function (k) {
+  return k + k
+}) // ['foofoo', 6, 4, 2, 'barbar']
+
+var reduced = myList.reduce(function (set, entry) {
+  set += entry
+  return set
+}, 'start')
+console.log(reduced) // 'startfoo123bar'
 ```
 
-... or using CommonJS syntax:
+## api
 
-```javascript
-const { v4: uuidv4 } = require('uuid');
-uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
-```
+The whole API is considered "public".
 
-For timestamp UUIDs, namespace UUIDs, and other options read on ...
+Functions with the same name as an Array method work more or less the
+same way.
 
-## API Summary
+There's reverse versions of most things because that's the point.
 
-|  |  |  |
-| --- | --- | --- |
-| [`uuid.NIL`](#uuidnil) | The nil UUID string (all zeros) | New in `uuid@8.3` |
-| [`uuid.parse()`](#uuidparsestr) | Convert UUID string to array of bytes | New in `uuid@8.3` |
-| [`uuid.stringify()`](#uuidstringifyarr-offset) | Convert array of bytes to UUID string | New in `uuid@8.3` |
-| [`uuid.v1()`](#uuidv1options-buffer-offset) | Create a version 1 (timestamp) UUID |  |
-| [`uuid.v3()`](#uuidv3name-namespace-buffer-offset) | Create a version 3 (namespace w/ MD5) UUID |  |
-| [`uuid.v4()`](#uuidv4options-buffer-offset) | Create a version 4 (random) UUID |  |
-| [`uuid.v5()`](#uuidv5name-namespace-buffer-offset) | Create a version 5 (namespace w/ SHA-1) UUID |  |
-| [`uuid.validate()`](#uuidvalidatestr) | Test a string to see if it is a valid UUID | New in `uuid@8.3` |
-| [`uuid.version()`](#uuidversionstr) | Detect RFC version of a UUID | New in `uuid@8.3` |
+### Yallist
 
-## API
+Default export, the class that holds and manages a list.
 
-### uuid.NIL
+Call it with either a forEach-able (like an array) or a set of
+arguments, to initialize the list.
 
-The nil UUID string (all zeros).
+The Array-ish methods all act like you'd expect.  No magic length,
+though, so if you change that it won't automatically prune or add
+empty spots.
 
-Example:
+### Yallist.create(..)
 
-```javascript
-import { NIL as NIL_UUID } from 'uuid';
+Alias for Yallist function.  Some people like factories.
 
-NIL_UUID; // ⇨ '00000000-0000-0000-0000-000000000000'
-```
+#### yallist.head
 
-### uuid.parse(str)
+The first node in the list
 
-Convert UUID string to array of bytes
+#### yallist.tail
 
-|           |                                          |
-| --------- | ---------------------------------------- |
-| `str`     | A valid UUID `String`                    |
-| _returns_ | `Uint8Array[16]`                         |
-| _throws_  | `TypeError` if `str` is not a valid UUID |
+The last node in the list
 
-Note: Ordering of values in the byte arrays used by `parse()` and `stringify()` follows the left &Rarr; right order of hex-pairs in UUID strings. As shown in the example below.
+#### yallist.length
 
-Example:
+The number of nodes in the list.  (Change this at your peril.  It is
+not magic like Array length.)
 
-```javascript
-import { parse as uuidParse } from 'uuid';
+#### yallist.toArray()
 
-// Parse a UUID
-const bytes = uuidParse('6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b');
+Convert the list to an array.
 
-// Convert to hex strings to show byte order (for documentation purposes)
-[...bytes].map((v) => v.toString(16).padStart(2, '0')); // ⇨ 
-  // [
-  //   '6e', 'c0', 'bd', '7f',
-  //   '11', 'c0', '43', 'da',
-  //   '97', '5e', '2a', '8a',
-  //   'd9', 'eb', 'ae', '0b'
-  // ]
-```
+#### yallist.forEach(fn, [thisp])
 
-### uuid.stringify(arr[, offset])
+Call a function on each item in the list.
 
-Convert array of bytes to UUID string
+#### yallist.forEachReverse(fn, [thisp])
 
-|                |                                                                              |
-| -------------- | ---------------------------------------------------------------------------- |
-| `arr`          | `Array`-like collection of 16 values (starting from `offset`) between 0-255. |
-| [`offset` = 0] | `Number` Starting index in the Array                                         |
-| _returns_      | `String`                                                                     |
-| _throws_       | `TypeError` if a valid UUID string cannot be generated                       |
+Call a function on each item in the list, in reverse order.
 
-Note: Ordering of values in the byte arrays used by `parse()` and `stringify()` follows the left &Rarr; right order of hex-pairs in UUID strings. As shown in the example below.
+#### yallist.get(n)
 
-Example:
+Get the data at position `n` in the list.  If you use this a lot,
+probably better off just using an Array.
 
-```javascript
-import { stringify as uuidStringify } from 'uuid';
+#### yallist.getReverse(n)
 
-const uuidBytes = [
-  0x6e, 0xc0, 0xbd, 0x7f, 0x11, 0xc0, 0x43, 0xda, 0x97, 0x5e, 0x2a, 0x8a, 0xd9, 0xeb, 0xae, 0x0b,
-];
+Get the data at position `n`, counting from the tail.
 
-uuidStringify(uuidBytes); // ⇨ '6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b'
-```
+#### yallist.map(fn, thisp)
 
-### uuid.v1([options[, buffer[, offset]]])
+Create a new Yallist with the result of calling the function on each
+item.
 
-Create an RFC version 1 (timestamp) UUID
+#### yallist.mapReverse(fn, thisp)
 
-|  |  |
-| --- | --- |
-| [`options`] | `Object` with one or more of the following properties: |
-| [`options.node` ] | RFC "node" field as an `Array[6]` of byte values (per 4.1.6) |
-| [`options.clockseq`] | RFC "clock sequence" as a `Number` between 0 - 0x3fff |
-| [`options.msecs`] | RFC "timestamp" field (`Number` of milliseconds, unix epoch) |
-| [`options.nsecs`] | RFC "timestamp" field (`Number` of nanoseconds to add to `msecs`, should be 0-10,000) |
-| [`options.random`] | `Array` of 16 random bytes (0-255) |
-| [`options.rng`] | Alternative to `options.random`, a `Function` that returns an `Array` of 16 random bytes (0-255) |
-| [`buffer`] | `Array \| Buffer` If specified, uuid will be written here in byte-form, starting at `offset` |
-| [`offset` = 0] | `Number` Index to start writing UUID bytes in `buffer` |
-| _returns_ | UUID `String` if no `buffer` is specified, otherwise returns `buffer` |
-| _throws_ | `Error` if more than 10M UUIDs/sec are requested |
+Same as `map`, but in reverse.
 
-Note: The default [node id](https://tools.ietf.org/html/rfc4122#section-4.1.6) (the last 12 digits in the UUID) is generated once, randomly, on process startup, and then remains unchanged for the duration of the process.
+#### yallist.pop()
 
-Note: `options.random` and `options.rng` are only meaningful on the very first call to `v1()`, where they may be passed to initialize the internal `node` and `clockseq` fields.
+Get the data from the list tail, and remove the tail from the list.
 
-Example:
+#### yallist.push(item, ...)
 
-```javascript
-import { v1 as uuidv1 } from 'uuid';
+Insert one or more items to the tail of the list.
 
-uuidv1(); // ⇨ '2c5ea4c0-4067-11e9-8bad-9b1deb4d3b7d'
-```
+#### yallist.reduce(fn, initialValue)
 
-Example using `options`:
+Like Array.reduce.
 
-```javascript
-import { v1 as uuidv1 } from 'uuid';
+#### yallist.reduceReverse
 
-const v1options = {
-  node: [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
-  clockseq: 0x1234,
-  msecs: new Date('2011-11-01').getTime(),
-  nsecs: 5678,
-};
-uuidv1(v1options); // ⇨ '710b962e-041c-11e1-9234-0123456789ab'
-```
+Like Array.reduce, but in reverse.
 
-### uuid.v3(name, namespace[, buffer[, offset]])
+#### yallist.reverse
 
-Create an RFC version 3 (namespace w/ MD5) UUID
+Reverse the list in place.
 
-API is identical to `v5()`, but uses "v3" instead.
+#### yallist.shift()
 
-&#x26a0;&#xfe0f; Note: Per the RFC, "_If backward compatibility is not an issue, SHA-1 [Version 5] is preferred_."
+Get the data from the list head, and remove the head from the list.
 
-### uuid.v4([options[, buffer[, offset]]])
+#### yallist.slice([from], [to])
 
-Create an RFC version 4 (random) UUID
+Just like Array.slice, but returns a new Yallist.
 
-|  |  |
-| --- | --- |
-| [`options`] | `Object` with one or more of the following properties: |
-| [`options.random`] | `Array` of 16 random bytes (0-255) |
-| [`options.rng`] | Alternative to `options.random`, a `Function` that returns an `Array` of 16 random bytes (0-255) |
-| [`buffer`] | `Array \| Buffer` If specified, uuid will be written here in byte-form, starting at `offset` |
-| [`offset` = 0] | `Number` Index to start writing UUID bytes in `buffer` |
-| _returns_ | UUID `String` if no `buffer` is specified, otherwise returns `buffer` |
+#### yallist.sliceReverse([from], [to])
 
-Example:
+Just like yallist.slice, but the result is returned in reverse.
 
-```javascript
-import { v4 as uuidv4 } from 'uuid';
+#### yallist.toArray()
 
-uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
-```
+Create an array representation of the list.
 
-Example using predefined `random` values:
+#### yallist.toArrayReverse()
 
-```javascript
-import { v4 as uuidv4 } from 'uuid';
+Create a reversed array representation of the list.
 
-const v4options = {
-  random: [
-    0x10, 0x91, 0x56, 0xbe, 0xc4, 0xfb, 0xc1, 0xea, 0x71, 0xb4, 0xef, 0xe1, 0x67, 0x1c, 0x58, 0x36,
-  ],
-};
-uuidv4(v4options); // ⇨ '109156be-c4fb-41ea-b1b4-efe1671c5836'
-```
+#### yallist.unshift(item, ...)
 
-### uuid.v5(name, namespace[, buffer[, offset]])
+Insert one or more items to the head of the list.
 
-Create an RFC version 5 (namespace w/ SHA-1) UUID
+#### yallist.unshiftNode(node)
 
-|  |  |
-| --- | --- |
-| `name` | `String \| Array` |
-| `namespace` | `String \| Array[16]` Namespace UUID |
-| [`buffer`] | `Array \| Buffer` If specified, uuid will be written here in byte-form, starting at `offset` |
-| [`offset` = 0] | `Number` Index to start writing UUID bytes in `buffer` |
-| _returns_ | UUID `String` if no `buffer` is specified, otherwise returns `buffer` |
+Move a Node object to the front of the list.  (That is, pull it out of
+wherever it lives, and make it the new head.)
 
-Note: The RFC `DNS` and `URL` namespaces are available as `v5.DNS` and `v5.URL`.
+If the node belongs to a different list, then that list will remove it
+first.
 
-Example with custom namespace:
+#### yallist.pushNode(node)
 
-```javascript
-import { v5 as uuidv5 } from 'uuid';
+Move a Node object to the end of the list.  (That is, pull it out of
+wherever it lives, and make it the new tail.)
 
-// Define a custom namespace.  Readers, create your own using something like
-// https://www.uuidgenerator.net/
-const MY_NAMESPACE = '1b671a64-40d5-491e-99b0-da01ff1f3341';
+If the node belongs to a list already, then that list will remove it
+first.
 
-uuidv5('Hello, World!', MY_NAMESPACE); // ⇨ '630eb68f-e0fa-5ecc-887a-7c7a62614681'
-```
+#### yallist.removeNode(node)
 
-Example with RFC `URL` namespace:
+Remove a node from the list, preserving referential integrity of head
+and tail and other nodes.
 
-```javascript
-import { v5 as uuidv5 } from 'uuid';
+Will throw an error if you try to have a list remove a node that
+doesn't belong to it.
 
-uuidv5('https://www.w3.org/', uuidv5.URL); // ⇨ 'c106a26a-21bb-5538-8bf2-57095d1976c1'
-```
+### Yallist.Node
 
-### uuid.validate(str)
+The class that holds the data and is actually the list.
 
-Test a string to see if it is a valid UUID
+Call with `var n = new Node(value, previousNode, nextNode)`
 
-|           |                                                     |
-| --------- | --------------------------------------------------- |
-| `str`     | `String` to validate                                |
-| _returns_ | `true` if string is a valid UUID, `false` otherwise |
+Note that if you do direct operations on Nodes themselves, it's very
+easy to get into weird states where the list is broken.  Be careful :)
 
-Example:
+#### node.next
 
-```javascript
-import { validate as uuidValidate } from 'uuid';
+The next node in the list.
 
-uuidValidate('not a UUID'); // ⇨ false
-uuidValidate('6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b'); // ⇨ true
-```
+#### node.prev
 
-Using `validate` and `version` together it is possible to do per-version validation, e.g. validate for only v4 UUIds.
+The previous node in the list.
 
-```javascript
-import { version as uuidVersion } from 'uuid';
-import { validate as uuidValidate } from 'uuid';
+#### node.value
 
-function uuidValidateV4(uuid) {
-  return uuidValidate(uuid) && uuidVersion(uuid) === 4;
-}
+The data the node contains.
 
-const v1Uuid = 'd9428888-122b-11e1-b85c-61cd3cbb3210';
-const v4Uuid = '109156be-c4fb-41ea-b1b4-efe1671c5836';
+#### node.list
 
-uuidValidateV4(v4Uuid); // ⇨ true
-uuidValidateV4(v1Uuid); // ⇨ false
-```
-
-### uuid.version(str)
-
-Detect RFC version of a UUID
-
-|           |                                          |
-| --------- | ---------------------------------------- |
-| `str`     | A valid UUID `String`                    |
-| _returns_ | `Number` The RFC version of the UUID     |
-| _throws_  | `TypeError` if `str` is not a valid UUID |
-
-Example:
-
-```javascript
-import { version as uuidVersion } from 'uuid';
-
-uuidVersion('45637ec4-c85f-11ea-87d0-0242ac130003'); // ⇨ 1
-uuidVersion('6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b'); // ⇨ 4
-```
-
-## Command Line
-
-UUIDs can be generated from the command line using `uuid`.
-
-```shell
-$ npx uuid
-ddeb27fb-d9a0-4624-be4d-4615062daed4
-```
-
-The default is to generate version 4 UUIDS, however the other versions are supported. Type `uuid --help` for details:
-
-```shell
-$ npx uuid --help
-
-Usage:
-  uuid
-  uuid v1
-  uuid v3 <name> <namespace uuid>
-  uuid v4
-  uuid v5 <name> <namespace uuid>
-  uuid --help
-
-Note: <namespace uuid> may be "URL" or "DNS" to use the corresponding UUIDs
-defined by RFC4122
-```
-
-## ECMAScript Modules
-
-This library comes with [ECMAScript Modules](https://www.ecma-international.org/ecma-262/6.0/#sec-modules) (ESM) support for Node.js versions that support it ([example](./examples/node-esmodules/)) as well as bundlers like [rollup.js](https://rollupjs.org/guide/en/#tree-shaking) ([example](./examples/browser-rollup/)) and [webpack](https://webpack.js.org/guides/tree-shaking/) ([example](./examples/browser-webpack/)) (targeting both, Node.js and browser environments).
-
-```javascript
-import { v4 as uuidv4 } from 'uuid';
-uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
-```
-
-To run the examples you must first create a dist build of this library in the module root:
-
-```shell
-npm run build
-```
-
-## CDN Builds
-
-### ECMAScript Modules
-
-To load this module directly into modern browsers that [support loading ECMAScript Modules](https://caniuse.com/#feat=es6-module) you can make use of [jspm](https://jspm.org/):
-
-```html
-<script type="module">
-  import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
-  console.log(uuidv4()); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
-</script>
-```
-
-### UMD
-
-As of `uuid@9` [UMD (Universal Module Definition)](https://github.com/umdjs/umd) builds are no longer shipped with this library.
-
-If you need a UMD build of this library, use a bundler like Webpack or Rollup. Alternatively, refer to the documentation of [`uuid@8.3.2`](https://github.com/uuidjs/uuid/blob/v8.3.2/README.md#umd) which was the last version that shipped UMD builds.
-
-## Known issues
-
-### Duplicate UUIDs (Googlebot)
-
-This module may generate duplicate UUIDs when run in clients with _deterministic_ random number generators, such as [Googlebot crawlers](https://developers.google.com/search/docs/advanced/crawling/overview-google-crawlers). This can cause problems for apps that expect client-generated UUIDs to always be unique. Developers should be prepared for this and have a strategy for dealing with possible collisions, such as:
-
-- Check for duplicate UUIDs, fail gracefully
-- Disable write operations for Googlebot clients
-
-### "getRandomValues() not supported"
-
-This error occurs in environments where the standard [`crypto.getRandomValues()`](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues) API is not supported. This issue can be resolved by adding an appropriate polyfill:
-
-### React Native / Expo
-
-1. Install [`react-native-get-random-values`](https://github.com/LinusU/react-native-get-random-values#readme)
-1. Import it _before_ `uuid`. Since `uuid` might also appear as a transitive dependency of some other imports it's safest to just import `react-native-get-random-values` as the very first thing in your entry point:
-
-```javascript
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
-```
-
-Note: If you are using Expo, you must be using at least `react-native-get-random-values@1.5.0` and `expo@39.0.0`.
-
-### Web Workers / Service Workers (Edge <= 18)
-
-[In Edge <= 18, Web Crypto is not supported in Web Workers or Service Workers](https://caniuse.com/#feat=cryptography) and we are not aware of a polyfill (let us know if you find one, please).
-
-### IE 11 (Internet Explorer)
-
-Support for IE11 and other legacy browsers has been dropped as of `uuid@9`. If you need to support legacy browsers, you can always transpile the uuid module source yourself (e.g. using [Babel](https://babeljs.io/)).
-
-## Upgrading From `uuid@7`
-
-### Only Named Exports Supported When Using with Node.js ESM
-
-`uuid@7` did not come with native ECMAScript Module (ESM) support for Node.js. Importing it in Node.js ESM consequently imported the CommonJS source with a default export. This library now comes with true Node.js ESM support and only provides named exports.
-
-Instead of doing:
-
-```javascript
-import uuid from 'uuid';
-uuid.v4();
-```
-
-you will now have to use the named exports:
-
-```javascript
-import { v4 as uuidv4 } from 'uuid';
-uuidv4();
-```
-
-### Deep Requires No Longer Supported
-
-Deep requires like `require('uuid/v4')` [which have been deprecated in `uuid@7`](#deep-requires-now-deprecated) are no longer supported.
-
-## Upgrading From `uuid@3`
-
-"_Wait... what happened to `uuid@4` thru `uuid@6`?!?_"
-
-In order to avoid confusion with RFC [version 4](#uuidv4options-buffer-offset) and [version 5](#uuidv5name-namespace-buffer-offset) UUIDs, and a possible [version 6](http://gh.peabody.io/uuidv6/), releases 4 thru 6 of this module have been skipped.
-
-### Deep Requires Now Deprecated
-
-`uuid@3` encouraged the use of deep requires to minimize the bundle size of browser builds:
-
-```javascript
-const uuidv4 = require('uuid/v4'); // <== NOW DEPRECATED!
-uuidv4();
-```
-
-As of `uuid@7` this library now provides ECMAScript modules builds, which allow packagers like Webpack and Rollup to do "tree-shaking" to remove dead code. Instead, use the `import` syntax:
-
-```javascript
-import { v4 as uuidv4 } from 'uuid';
-uuidv4();
-```
-
-... or for CommonJS:
-
-```javascript
-const { v4: uuidv4 } = require('uuid');
-uuidv4();
-```
-
-### Default Export Removed
-
-`uuid@3` was exporting the Version 4 UUID method as a default export:
-
-```javascript
-const uuid = require('uuid'); // <== REMOVED!
-```
-
-This usage pattern was already discouraged in `uuid@3` and has been removed in `uuid@7`.
-
----
-
-Markdown generated from [README_js.md](README_js.md) by <a href="https://github.com/broofa/runmd"><image height="12px" src="https://camo.githubusercontent.com/5c7c603cd1e6a43370b0a5063d457e0dabb74cf317adc7baba183acb686ee8d0/687474703a2f2f692e696d6775722e636f6d2f634a4b6f3662552e706e67" /></a>
+The list to which this node belongs.  (Null if it does not belong to
+any list.)

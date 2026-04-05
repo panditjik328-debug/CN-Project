@@ -1,6 +1,5 @@
-export default function SDFGenerator() {
+function SDFGenerator() {
 var exports = (function (exports) {
-  'use strict';
 
   /**
    * Find the point on a quadratic bezier curve at t where t is in the range [0, 1]
@@ -819,3 +818,5 @@ var exports = (function (exports) {
 }({}));
 return exports
 }
+
+export { SDFGenerator as default };
