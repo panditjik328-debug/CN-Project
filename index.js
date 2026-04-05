@@ -1,7 +1,12 @@
-// Exports for troika-three-text package:
-
-export { configureTextBuilder, typesetterWorkerModule, preloadFont, dumpSDFTextures } from './TextBuilder.js'
-export { Text } from './Text.js'
-export { GlyphsGeometry } from './GlyphsGeometry.js'
-export { createTextDerivedMaterial } from './TextDerivedMaterial.js'
-export { getCaretAtPoint, getSelectionRects } from './selectionUtils.js'
+export { MeshBVH } from './core/MeshBVH.js';
+export { MeshBVHVisualizer } from './objects/MeshBVHVisualizer.js';
+export { CENTER, AVERAGE, SAH, NOT_INTERSECTED, INTERSECTED, CONTAINED } from './core/Constants.js';
+export { getBVHExtremes, estimateMemoryInBytes, getJSONStructure, validateBounds } from './debug/Debug.js';
+export { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from './utils/ExtensionUtilities.js';
+export { getTriangleHitPointInfo } from './utils/TriangleUtilities.js';
+export * from './math/ExtendedTriangle.js';
+export * from './math/OrientedBox.js';
+export * from './gpu/MeshBVHUniformStruct.js';
+export * from './gpu/shaderFunctions.js';
+export * from './gpu/VertexAttributeTexture.js';
+export * from './utils/StaticGeometryGenerator.js';

@@ -1,35 +1,83 @@
 {
-  "name": "troika-three-text",
-  "version": "0.47.2",
-  "description": "SDF-based text rendering for Three.js",
-  "author": "Jason Johnston <jason.johnston@protectwise.com>",
+  "name": "three-mesh-bvh",
+  "version": "0.6.8",
+  "description": "A BVH implementation to speed up raycasting against three.js meshes.",
+  "module": "src/index.js",
+  "main": "build/index.umd.cjs",
+  "type": "module",
+  "types": "src/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "start": "concurrently \"rollup -w -c rollup-templating.config.js\" \"parcel serve ./example/*.html --dist-dir ./example/dev-bundle/ --no-hmr\"",
+    "build": "rollup -c rollup-templating.config.js && rollup -c",
+    "build-silent": "rollup -c rollup-templating.config.js --silent && rollup -c --silent",
+    "build-examples": "npm run build && cd example && parcel build ./*.html --dist-dir ./bundle/ --public-url . --no-cache --no-content-hash",
+    "test": "npm run build-silent && cd test && jest",
+    "lint": "eslint \"./src/**/*.{js,ts}\" \"./test/**/*.{js,ts}\" \"./example/*.js\" && tsc --noEmit",
+    "benchmark": "npm run build-silent && node benchmark/run-benchmark.js",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "src/*",
+    "build/*"
+  ],
+  "keywords": [
+    "graphics",
+    "raycast",
+    "tree",
+    "bounds",
+    "threejs",
+    "three-js",
+    "bounds-hierarchy",
+    "performance",
+    "raytracing",
+    "pathtracing",
+    "geometry",
+    "mesh",
+    "distance",
+    "intersection",
+    "acceleration",
+    "bvh",
+    "webvr",
+    "webxr"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/protectwise/troika.git",
-    "directory": "packages/troika-three-text"
+    "url": "git+https://github.com/gkjohnson/three-mesh-bvh.git"
   },
+  "author": "Garrett Johnson <garrett.kjohnson@gmail.com>",
   "license": "MIT",
-  "sideEffects": false,
-  "main": "dist/troika-three-text.umd.js",
-  "module": "dist/troika-three-text.esm.js",
-  "module:src": "src/index.js",
-  "dependencies": {
-    "bidi-js": "^1.0.2",
-    "troika-three-utils": "^0.47.2",
-    "troika-worker-utils": "^0.47.2",
-    "webgl-sdf-generator": "1.1.1"
+  "bugs": {
+    "url": "https://github.com/gkjohnson/three-mesh-bvh/issues"
   },
+  "homepage": "https://github.com/gkjohnson/three-mesh-bvh#readme",
   "peerDependencies": {
-    "three": ">=0.125.0"
+    "three": ">= 0.151.0"
   },
   "devDependencies": {
-    "@fredli74/typr": "0.3.7",
-    "fflate": "^0.7.0",
-    "node-fetch": "^2.6.0"
-  },
-  "scripts": {
-    "build-typr": "rollup -c rollup.config.build-typr.js",
-    "build-woff2otf": "rollup -c rollup.config.build-woff2otf.js"
-  },
-  "gitHead": "27cb013dd98d1b3e47d42dcc2787313949525572"
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.4",
+    "@types/eslint": "^7.28.1",
+    "@types/jest": "^27.0.2",
+    "@types/three": "^0.151.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "babel-jest": "^27.2.4",
+    "concurrently": "^8.2.1",
+    "eslint": "^7.32.0",
+    "eslint-config-mdcs": "^5.0.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "glob": "^10.3.3",
+    "jest": "^27.2.4",
+    "parcel": "^2.0.0",
+    "preprocess": "^3.2.0",
+    "rollup": "^3.28.1",
+    "script-loader": "^0.7.2",
+    "simple-git": "^3.19.1",
+    "simplex-noise": "^2.4.0",
+    "static-server": "^2.2.1",
+    "stats.js": "^0.17.0",
+    "three": "^0.151.0",
+    "typescript": "^4.4.3"
+  }
 }
