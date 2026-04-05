@@ -1,534 +1,384 @@
-# fflate
-High performance (de)compression in an 8kB package
+# Troika Text for Three.js
 
-## Why fflate?
-`fflate` (short for fast flate) is the **fastest, smallest, and most versatile** pure JavaScript compression and decompression library in existence, handily beating [`pako`](https://npmjs.com/package/pako), [`tiny-inflate`](https://npmjs.com/package/tiny-inflate), and [`UZIP.js`](https://github.com/photopea/UZIP.js) in performance benchmarks while being multiple times more lightweight. Its compression ratios are often better than even the original Zlib C library. It includes support for DEFLATE, GZIP, and Zlib data. Data compressed by `fflate` can be decompressed by other tools, and vice versa.
+The `troika-three-text` package provides high quality text rendering in [Three.js](https://threejs.org) scenes, using signed distance fields (SDF) and antialiasing using standard derivatives.
 
-In addition to the base decompression and compression APIs, `fflate` supports high-speed ZIP file archiving for an extra 3 kB. In fact, the compressor, in synchronous mode, compresses both more quickly and with a higher compression ratio than most compression software (even Info-ZIP, a C program), and in asynchronous mode it can utilize multiple threads to achieve over 3x the performance of any other utility.
+Rather than relying on pre-generated SDF textures, this parses font files (.ttf, .otf, .woff) directly using [Typr](https://github.com/fredli74/Typr.ts), and generates the SDF atlas for glyphs on-the-fly as they are used. It also handles proper kerning, ligature glyph substitution, right-to-left/bidirectional layout, and joined scripts like Arabic. All font parsing, SDF generation, and glyph layout is performed in a web worker to prevent frame drops.
 
-|                             | `pako` | `tiny-inflate`         | `UZIP.js`             | `fflate`                       |
-|-----------------------------|--------|------------------------|-----------------------|--------------------------------|
-| Decompression performance   | 1x     | Up to 40% slower       | **Up to 40% faster**  | **Up to 40% faster**           |
-| Compression performance     | 1x     | N/A                    | Up to 5% faster       | **Up to 50% faster**           |
-| Base bundle size (minified) | 45.6kB | **3kB (inflate only)** | 14.2kB                | 8kB **(3kB for inflate only)** |
-| Compression support         | ✅     | ❌                      | ✅                    | ✅                             |
-| Thread/Worker safe          | ✅     | ✅                      | ❌                    | ✅                             |
-| ZIP support                 | ❌     | ❌                      | ✅                    | ✅                             |
-| Streaming support           | ✅     | ❌                      | ❌                    | ✅                             |
-| GZIP/Zlib support           | ✅     | ❌                      | ❌                    | ✅                             |
-| Supports files up to 4GB    | ✅     | ❌                      | ❌                    | ✅                             |
-| Doesn't hang on error       | ✅     | ❌                      | ❌                    | ✅                             |
-| Multi-thread/Asynchronous   | ❌     | ❌                      | ❌                    | ✅                             |
-| Streaming ZIP support       | ❌     | ❌                      | ❌                    | ✅                             |
-| Uses ES Modules             | ❌     | ❌                      | ❌                    | ✅                             |
+Once the SDFs are generated, it assembles a geometry that positions all the glyphs, and _patches_ any Three.js Material with the proper shader code for rendering the SDFs. This means you can still benefit from all the features of Three.js's built-in materials like lighting, physically-based rendering, shadows, and fog.
 
-## Demo
-If you'd like to try `fflate` for yourself without installing it, you can take a look at the [browser demo](https://101arrowz.github.io/fflate). Since `fflate` is a pure JavaScript library, it works in both the browser and Node.js (see [Browser support](https://github.com/101arrowz/fflate/#browser-support) for more info).
+## Demos
+
+* [With the Troika scene management framework](https://troika-examples.netlify.com/#text)
+* [With react-three-fiber](https://codesandbox.io/embed/troika-3d-text-via-react-three-fiber-ntfx2?fontsize=14)
+* [With a video texture](https://bfplr.csb.app/)
+* [With the Material Icons font](https://codesandbox.io/s/material-icons-in-troika-three-text-t2mu7?file=/src/index.js)
+
+## With Other Frameworks
+
+* [In the `drei` utilities for react-three-fiber](https://github.com/pmndrs/drei#text)
+* [As an A-Frame component](https://github.com/lojjic/aframe-troika-text)
+* [As a Web Component in three-elements](https://www.npmjs.com/package/@three-elements/text)
+
+## Screenshots
+
+![Text Rendering](../../docs/troika-three-text/images/screenshot1.png)
+
+![Zoomed-in](../../docs/troika-three-text/images/screenshot2.png)
+
+![Font with ligatures](../../docs/troika-three-text/images/screenshot3.png)
+
+![Text with a texture](../../docs/troika-three-text/images/screenshot4.png)
+
+## Installation
+
+Get it from [NPM](https://www.npmjs.com/package/troika-three-text):
+
+```sh
+npm install troika-three-text
+```
+
+You will also need to install a compatible version of [Three.js](https://threejs.org); see the [notes on Three.js versions in the Getting Started docs](../../docs/getting-started/setup.md#threejs) for details.
+
+```sh
+npm install three
+```
 
 ## Usage
 
-Install `fflate`:
-```sh
-npm i fflate # or yarn add fflate, or pnpm add fflate
-```
-
-Import:
 ```js
-// I will assume that you use the following for the rest of this guide
-import * as fflate from 'fflate';
-
-// However, you should import ONLY what you need to minimize bloat.
-// So, if you just need GZIP compression support:
-import { gzipSync } from 'fflate';
-// Woo! You just saved 20 kB off your bundle with one line.
+import {Text} from 'troika-three-text'
 ```
 
-If your environment doesn't support ES Modules (e.g. Node.js):
+You can then use the `Text` class like any other Three.js mesh:
+
 ```js
-// Try to avoid this when using fflate in the browser, as it will import
-// all of fflate's components, even those that you aren't using.
-const fflate = require('fflate');
+// Create:
+const myText = new Text()
+myScene.add(myText)
+
+// Set properties to configure:
+myText.text = 'Hello world!'
+myText.fontSize = 0.2
+myText.position.z = -2
+myText.color = 0x9966FF
+
+// Update the rendering:
+myText.sync()
 ```
 
-If you want to load from a CDN in the browser:
-```html
-<!--
-You should use either UNPKG or jsDelivr (i.e. only one of the following)
+It's a good idea to call the `.sync()` method after changing any properties that would affect the text's layout. If you don't, it will be called automatically on the next render frame, but calling it yourself can get the result sooner.
 
-Note that tree shaking is completely unsupported from the CDN. If you want
-a small build without build tools, please ask me and I will make one manually
-with only the features you need. This build is about 27kB, or 9kB gzipped.
+When you're done with the `Text` instance, be sure to call `dispose` on it to prevent a memory leak:
 
-You may also want to specify the version, e.g. with fflate@0.4.8
--->
-<script src="https://unpkg.com/fflate"></script>
-<script src="https://cdn.jsdelivr.net/npm/fflate/umd/index.js"></script>
-<!-- Now, the global variable fflate contains the library -->
-
-<!-- If you're going buildless but want ESM, import from Skypack -->
-<script type="module">
-  import * as fflate from 'https://cdn.skypack.dev/fflate?min';
-</script>
-```
-
-If you are using Deno:
 ```js
-// Don't use the ?dts Skypack flag; it isn't necessary for Deno support
-// The @deno-types comment adds TypeScript typings
-
-// @deno-types="https://cdn.skypack.dev/fflate/lib/index.d.ts"
-import * as fflate from 'https://cdn.skypack.dev/fflate?min';
+myScene.remove(myText)
+myText.dispose()
 ```
 
+## Supported properties
 
-If your environment doesn't support bundling:
+Instances of `Text` support the following configuration properties:
+
+### `text`
+
+The string of text to be rendered. Newlines and repeating whitespace characters are honored.
+
+Default: _none_
+
+### `anchorX`
+
+Defines the horizontal position in the text block that should line up with the local origin. Can be specified as a numeric `x` position in local units, a string percentage of the total text block width e.g. `'25%'`, or one of the following keyword strings: `'left'`, `'center'`, or `'right'`.
+
+Default: `0`
+
+### `anchorY`
+
+Defines the vertical position in the text block that should line up with the local origin. Can be specified as a numeric `y` position in local units (note: down is negative y), a string percentage of the total text block height e.g. `'25%'`, or one of the following keyword strings: `'top'`, `'top-baseline'`, `'top-cap'`, `'top-ex'`, `'middle'`, `'bottom-baseline'`, or `'bottom'`.
+
+Default: `0`
+
+### `clipRect`
+
+If specified, defines the `[minX, minY, maxX, maxY]` of a rectangle outside of which all pixels will be discarded. This can be used for example to clip overflowing text when `whiteSpace='nowrap'`.
+
+Default: _none_
+
+### `color`
+
+This is a shortcut for setting the `color` of the text's `material`. You can use this if you don't want to specify a whole custom `material` and just want to change its color.
+
+Use the `material` property if you want to control aspects of the material other than its color.
+
+Default: _none_ - uses the color of the `material`
+
+### `curveRadius`
+
+Defines a cylindrical radius along which the text's plane will be curved. Positive numbers put the cylinder's centerline (oriented vertically) that distance in front of the text, for a concave curvature, while negative numbers put it behind the text for a convex curvature. The centerline will be aligned with the text's local origin; you can use `anchorX` to offset it.
+
+Since each glyph is by default rendered with a simple quad, each glyph remains a flat plane internally. You can use [`glyphGeometryDetail`](#glyphgeometrydetail) to add more vertices for curvature inside glyphs.
+
+Default: `0`
+
+### `depthOffset`
+
+This is a shortcut for setting the material's [`polygonOffset` and related properties](https://threejs.org/docs/#api/en/materials/Material.polygonOffset), which can be useful in preventing z-fighting when this text is laid on top of another plane in the scene. Positive numbers are further from the camera, negatives closer.
+
+Be aware that while this can help with z-fighting, it does not affect the rendering order; if the text renders before the content behind it, you may see antialiasing pixels that appear too dark or light. You may need to also change the text mesh's `renderOrder`, or set its `z` position a fraction closer to the camera, to ensure the text renders after background objects.
+
+Default: `0`
+
+### `direction`
+
+Sets the base direction for the text. The default value of "auto" will choose a direction based on the text's content according to the bidi spec. A value of "ltr" or "rtl" will force the direction.
+
+Default: `'auto'`
+
+### `fillOpacity`
+
+Controls the opacity of just the glyph's fill area, separate from any configured `strokeOpacity`, `outlineOpacity`, and the material's `opacity`. A `fillOpacity` of `0` will make the fill invisible, leaving just the stroke and/or outline.
+
+Default: `1`
+
+### `font`
+
+The URL of a custom font file to be used. Supported font formats are:
+* .ttf
+* .otf
+* .woff (.woff2 is _not_ supported)
+
+Default: The *Roboto* font loaded from Google Fonts CDN
+
+### `fontSize`
+
+The em-height at which to render the font, in local world units.
+
+Default: `0.1`
+
+### `glyphGeometryDetail`
+
+The number of vertical/horizontal segments that make up each glyph's rectangular plane. This can be increased to provide more geometrical detail for custom vertex shader effects, for example.
+
+Default: `1`
+
+### `gpuAccelerateSDF`
+
+When `true`, the SDF generation process will be GPU-accelerated with WebGL when possible, making it much faster especially for complex glyphs, and falling back to a JavaScript version executed in web workers when support isn't available. It should automatically detect support, but it's still somewhat experimental, so you can set it to `false` to force it to use the JS version if you encounter issues with it.
+
+Default: `true`
+
+### `letterSpacing`
+
+Sets a uniform adjustment to spacing between letters after kerning is applied, in local world units. Positive numbers increase spacing and negative numbers decrease it.
+
+Default: `0`
+
+### `lineHeight`
+
+Sets the height of each line of text. Can either be `'normal'` which chooses a reasonable height based on the chosen font's ascender/descender metrics, or a number that is interpreted as a multiple of the `fontSize`.
+
+Default: `'normal'`
+
+### `material`
+
+Defines a Three.js Material _instance_ to be used as a base when rendering the text. This material will be automatically replaced with a new material derived from it, that adds shader code to decrease the alpha for each fragment (pixel) outside the text glyphs, with antialiasing.
+
+By default it will derive from a simple white `MeshBasicMaterial, but you can use any of the other mesh materials to gain other features like lighting, texture maps, etc.
+
+Also see the `color` shortcut property.
+
+Note that because your material instance is _replaced_ by a derived material instance, any changes you make to your original material will _not_ be reflected in the derived version. If you need to modify properties of the material afterward, be sure you get a new reference to the derived version:
+
 ```js
-// Again, try to import just what you need
+// Bad:
+text.material = myOrigMaterial
+myOrigMaterial.opacity = 0.5
 
-// For the browser:
-import * as fflate from 'fflate/esm/browser.js';
-// If the standard ESM import fails on Node (i.e. older version):
-import * as fflate from 'fflate/esm';
+// Good:
+text.material = myOrigMaterial
+text.material.opacity = 0.5
 ```
 
-And use:
-```js
-// This is an ArrayBuffer of data
-const massiveFileBuf = await fetch('/aMassiveFile').then(
-  res => res.arrayBuffer()
-);
-// To use fflate, you need a Uint8Array
-const massiveFile = new Uint8Array(massiveFileBuf);
-// Note that Node.js Buffers work just fine as well:
-// const massiveFile = require('fs').readFileSync('aMassiveFile.txt');
+Default: a `MeshBasicMaterial` instance
 
-// Higher level means lower performance but better compression
-// The level ranges from 0 (no compression) to 9 (max compression)
-// The default level is 6
-const notSoMassive = fflate.zlibSync(massiveFile, { level: 9 });
-const massiveAgain = fflate.unzlibSync(notSoMassive);
-const gzipped = fflate.gzipSync(massiveFile, {
-  // GZIP-specific: the filename to use when decompressed
-  filename: 'aMassiveFile.txt',
-  // GZIP-specific: the modification time. Can be a Date, date string,
-  // or Unix timestamp
-  mtime: '9/1/16 2:00 PM'
-});
-```
-`fflate` can autodetect a compressed file's format as well:
-```js
-const compressed = new Uint8Array(
-  await fetch('/GZIPorZLIBorDEFLATE').then(res => res.arrayBuffer())
-);
-// Above example with Node.js Buffers:
-// Buffer.from('H4sIAAAAAAAAE8tIzcnJBwCGphA2BQAAAA==', 'base64');
+### `maxWidth`
 
-const decompressed = fflate.decompressSync(compressed);
-```
+The maximum width of the text block, above which text may start wrapping according to the `whiteSpace` and `overflowWrap` properties.
 
-Using strings is easy with `fflate`'s string conversion API:
-```js
-const buf = fflate.strToU8('Hello world!');
+Default: `Infinity`, meaning text will never wrap
 
-// The default compression method is gzip
-// Increasing mem may increase performance at the cost of memory
-// The mem ranges from 0 to 12, where 4 is the default
-const compressed = fflate.compressSync(buf, { level: 6, mem: 8 });
+### `outlineBlur`
 
-// When you need to decompress:
-const decompressed = fflate.decompressSync(compressed);
-const origText = fflate.strFromU8(decompressed);
-console.log(origText); // Hello world!
-```
+Specifies a blur radius applied to the outer edge of the text's `outlineWidth`. If the `outlineWidth` is zero, the blur will be applied at the glyph edge, like CSS's `text-shadow` blur radius. A blur plus a nonzero `outlineWidth` can give a solid outline with a fuzzy outer edge.
 
-If you need to use an (albeit inefficient) binary string, you can set the second argument to `true`.
-```js
-const buf = fflate.strToU8('Hello world!');
+The blur radius can be specified as either an absolute number in local units, or as a percentage string e.g. `"12%"` which is treated as a percentage of the `fontSize`.
 
-// The second argument, latin1, is a boolean that indicates that the data
-// is not Unicode but rather should be encoded and decoded as Latin-1.
-// This is useful for creating a string from binary data that isn't
-// necessarily valid UTF-8. However, binary strings are incredibly
-// inefficient and tend to double file size, so they're not recommended.
-const compressedString = fflate.strFromU8(
-  fflate.compressSync(buf),
-  true
-);
-const decompressed = fflate.decompressSync(
-  fflate.strToU8(compressedString, true)
-);
-const origText = fflate.strFromU8(decompressed);
-console.log(origText); // Hello world!
-```
+Default: `0`
 
-You can use streams as well to incrementally add data to be compressed or decompressed:
-```js
-// This example uses synchronous streams, but for the best experience
-// you'll definitely want to use asynchronous streams.
+### `outlineColor`
 
-let outStr = '';
-const gzipStream = new fflate.Gzip({ level: 9 }, (chunk, isLast) => {
-  // accumulate in an inefficient binary string (just an example)
-  outStr += fflate.strFromU8(chunk, true);
-});
+The color to use for the text outline when `outlineWidth`, `outlineBlur`, and/or `outlineOffsetX/Y` are set. Accepts a ThreeJS `Color` object, or a number/string accepted by `Color#set`.
 
-// You can also attach the data handler separately if you don't want to
-// do so in the constructor.
-gzipStream.ondata = (chunk, final) => { ... }
+Default: black
 
-// Since this is synchronous, all errors will be thrown by stream.push()
-gzipStream.push(chunk1);
-gzipStream.push(chunk2);
+### `outlineOffsetX`, `outlineOffsetY`
 
-...
+These define a horizontal and vertical offset of the text outline. Using an offset with `outlineWidth: 0` creates a drop-shadow effect like CSS's `text-shadow`; also see `outlineBlur`. 
 
-// You should mark the last chunk by using true in the second argument
-// In addition to being necessary for the stream to work properly, this
-// will also set the isLast parameter in the handler to true.
-gzipStream.push(lastChunk, true);
+The offsets can be specified as either an absolute number in local units, or as a percentage string e.g. `"12%"` which is treated as a percentage of the `fontSize`.
 
-console.log(outStr); // The compressed binary string is now available
+Default: `0`
 
-// The options parameter for compression streams is optional; you can
-// provide one parameter (the handler) or none at all if you set
-// deflateStream.ondata later.
-const deflateStream = new fflate.Deflate((chunk, final) => {
-  console.log(chunk, final);
-});
+### `outlineOpacity`
 
-// If you want to create a stream from strings, use EncodeUTF8
-const utfEncode = new fflate.EncodeUTF8((data, final) => {
-  // Chaining streams together is done by pushing to the
-  // next stream in the handler for the previous stream
-  deflateStream.push(data, final);
-});
+Sets the opacity of a configured text outline, in the range `0` to `1`.
 
-utfEncode.push('Hello'.repeat(1000));
-utfEncode.push(' '.repeat(100));
-utfEncode.push('world!'.repeat(10), true);
+Default: `1`
 
-// The deflateStream has logged the compressed data
+### `outlineWidth`
 
-const inflateStream = new fflate.Inflate();
-inflateStream.ondata = (decompressedChunk, final) => { ... };
+The width of an outline/halo to be drawn around each text glyph using the `outlineColor` and `outlineOpacity`. This can help improve readability when the text is displayed against a background of low or varying contrast. 
 
-let stringData = '';
+The width can be specified as either an absolute number in local units, or as a percentage string e.g. `"10%"` which is interpreted as a percentage of the `fontSize`.
 
-// Streaming UTF-8 decode is available too
-const utfDecode = new fflate.DecodeUTF8((data, final) => {
-  stringData += data;
-});
+Default: `0`
 
-// Decompress streams auto-detect the compression method, as the
-// non-streaming decompress() method does.
-const dcmpStrm = new fflate.Decompress((chunk, final) => {
-  console.log(chunk, 'was encoded with GZIP, Zlib, or DEFLATE');
-  utfDecode.push(chunk, final);
-});
+### `overflowWrap`
 
-dcmpStrm.push(zlibJSONData1);
-dcmpStrm.push(zlibJSONData2, true);
+Defines how text wraps if the `whiteSpace` property is `'normal'`. Can be either `'normal'` to break at whitespace characters, or `'break-word'` to allow breaking within words.
 
-// This succeeds; the UTF-8 decoder chained with the unknown compression format
-// stream to reach a string as a sink.
-console.log(JSON.parse(stringData));
-```
+Default: `'normal'`
 
-You can create multi-file ZIP archives easily as well. Note that by default, compression is enabled for all files, which is not useful when ZIPping many PNGs, JPEGs, PDFs, etc. because those formats are already compressed. You should either override the level on a per-file basis or globally to avoid wasting resources.
-```js
-// Note that the asynchronous version (see below) runs in parallel and
-// is *much* (up to 3x) faster for larger archives.
-const zipped = fflate.zipSync({
-  // Directories can be nested structures, as in an actual filesystem
-  'dir1': {
-    'nested': {
-      // You can use Unicode in filenames
-      '你好.txt': std('Hey there!')
-    },
-    // You can also manually write out a directory path
-    'other/tmp.txt': new Uint8Array([97, 98, 99, 100])
-  },
-  // You can also provide compression options
-  'myImageData.bmp': [aMassiveFile, {
-    level: 9,
-    mem: 12,
-    // ZIP-specific: mtime works here too, defaults to current time
-    mtime: new Date('10/20/2020')
-  }],
-  // PNG is pre-compressed; no need to waste time
-  'superTinyFile.png': [aPNGFile, { level: 0 }]
-}, {
-  // These options are the defaults for all files, but file-specific
-  // options take precedence.
-  level: 1,
-  // Obfuscate mtime by default
-  mtime: 0
-});
+### `sdfGlyphSize`
 
-// If you write the zipped data to myzip.zip and unzip, the folder
-// structure will be outputted as:
+Allows overriding the default size of each glyph's SDF (signed distance field) used when rendering this text instance. This must be a power-of-two number. Larger sizes can improve the quality of glyph rendering by increasing the sharpness of corners and preventing loss of very thin lines, at the expense of increased memory footprint and longer SDF generation time.
 
-// myzip.zip (original file)
-// dir1
-// |-> nested
-// |   |-> 你好.txt
-// |-> other
-// |   |-> tmp.txt
-// myImageData.bmp
-// superTinyFile.bin
+Default: `64`
 
-// When decompressing, folders are not nested; all filepaths are fully
-// written out in the keys. For example, the return value may be:
-// { 'nested/directory/a2.txt': Uint8Array(2) [97, 97] })
-const decompressed = fflate.unzipSync(zipped);
-```
+### `strokeColor`
 
-If you need extremely high performance or custom ZIP compression formats, you can use the highly-extensible ZIP streams. They take streams as both input and output. You can even use custom compression/decompression algorithms from other libraries, as long as they [are defined in the ZIP spec](https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) (see section 4.4.5). If you'd like more info on using custom compressors, [feel free to ask](https://github.com/101arrowz/fflate/discussions).
-```js
-// ZIP object
-// Can also specify zip.ondata outside of the constructor
-const zip = new fflate.Zip((err, dat, final) => {
-  if (!err) {
-    // output of the streams
-    console.log(dat, final);
-  }
-});
+The color of the text stroke, when `strokeWidth` is nonzero. Accepts a ThreeJS `Color` object, or a number/string accepted by `Color#set`.
 
-const helloTxt = new fflate.ZipDeflate('hello.txt', {
-  level: 9
-});
+Default: grey
 
-// Always add streams to ZIP archives before pushing to those streams
-zip.add(helloTxt);
+### `strokeOpacity`
 
-helloTxt.push(chunk1);
-// Last chunk
-helloTxt.push(chunk2, true);
+The opacity of the text stroke, when `strokeWidth` is nonzero. Accepts a number from `0` to `1`.
 
-// ZipPassThrough is like ZipDeflate with level 0, but allows for tree shaking
-const nonStreamingFile = new fflate.ZipPassThrough('test.png');
-zip.add(nonStreamingFile);
-// If you have data already loaded, just .push(data, true)
-nonStreamingFile.push(pngData, true);
+Default: `1`
 
-// You need to call .end() after finishing
-// This ensures the ZIP is valid
-zip.end();
+### `strokeWidth`
 
-// Unzip object
-const unzipper = new fflate.Unzip();
+Sets the width of a stroke drawn inside the edge of each text glyph, using the `strokeColor` and `strokeOpacity`.
 
-// This function will almost always have to be called. It is used to support
-// compression algorithms such as BZIP2 or LZMA in ZIP files if just DEFLATE
-// is not enough (though it almost always is).
-// If your ZIP files are not compressed, this line is not needed.
-unzipper.register(fflate.UnzipInflate);
+The width can be specified as either an absolute number in local units, or as a percentage string e.g. `"10%"` which is interpreted as a percentage of the `fontSize`.
 
-const neededFiles = ['file1.txt', 'example.json'];
+Default: `0`
 
-// Can specify handler in constructor too
-unzipper.onfile = file => {
-  // file.name is a string, file is a stream
-  if (neededFiles.includes(file.name)) {
-    file.ondata = (err, dat, final) => {
-      // Stream output here
-      console.log(dat, final);
-    };
+### `textAlign`
+
+The horizontal alignment of each line of text within the overall text bounding box. Can be one of `'left'`, `'right'`, `'center'`, or `'justify'`.
+
+Default: `'left'`
+
+### `textIndent`
+
+An indentation applied to the first character of each _hard_ newline. Behaves like CSS `text-indent`.
+
+Default: `0`
+
+### `whiteSpace`
+
+Defines whether text should wrap when a line reaches the `maxWidth`. Can be either `'normal'`, to allow wrapping according to the `overflowWrap` property, or `'nowrap'` to prevent wrapping.
+
+Note that `'normal'` in this context _does_ honor newline characters to manually break lines, making it behave more like `'pre-wrap'` does in CSS.
+
+Default: `'normal'`
+
+
+## Handling Asynchronous Updates
+
+Since the text processing occurs in a web worker, it is by definition asynchronous. This means that you can't rely on the text being visible or having a complete geometry immediately. If you need to do things like access the geometry's `boundingSphere` or the `textRenderInfo`, you will have to listen for completion. You can do this two ways:
+
+1. Pass a callback function when you call the `sync` method:
+
+    ```js
+    myText.sync(() => {
+      // code to execute after sync completes...
+    })
+    ```
+   
+    This is best when you want to only react to _that specific_ sync call. Keep in mind that the callback will not execute if the text is already fully synced.
+   
+2. Add a listener for the `synccomplete` event:
+
+    ```js
+    myText.addEventListener('synccomplete', () => {
+      // code to execute after sync completes...
+    })
+    ```
+
+    This will fire after _every_ sync, no matter who invoked it. This is best if you need to react to all syncs, for example to trigger a manual canvas render.
     
-    console.log('Reading:', file.name);
+    You can also listen for the `syncstart` event if you need to react to the initiation of a sync call, e.g. to set some sort of "waiting" state while the text is being processed.
 
-    // File sizes are sometimes not set if the ZIP file did not encode
-    // them, so you may want to check that file.size != undefined
-    console.log('Compressed size', file.size);
-    console.log('Decompressed size', file.originalSize);
 
-    // You should only start the stream if you plan to use it to improve
-    // performance. Only after starting the stream will ondata be called.
-    // This method will throw if the compression method hasn't been registered
-    file.start();
-  }
-};
+## Preloading
 
-// Try to keep under 5,000 files per chunk to avoid stack limit errors
-// For example, if all files are a few kB, multi-megabyte chunks are OK
-// If files are mostly under 100 bytes, 64kB chunks are the limit
-unzipper.push(zipChunk1);
-unzipper.push(zipChunk2);
-unzipper.push(zipChunk3, true);
-```
+To avoid long pauses when first displaying a piece of text in your scene, you can preload fonts and optionally pre-generate the SDF textures for particular glyphs up front:
 
-As you may have guessed, there is an asynchronous version of every method as well. Unlike most libraries, this will cause the compression or decompression run in a separate thread entirely and automatically by using Web (or Node) Workers (as of now, Deno is unsupported). This means that the processing will not block the main thread at all. 
-
-Note that there is a significant initial overhead to using workers of about 70ms, so it's best to avoid the asynchronous API unless necessary. However, if you're compressing multiple large files at once, or the synchronous API causes the main thread to hang for too long, the callback APIs are an order of magnitude better.
 ```js
-import {
-  gzip, zlib, AsyncGzip, zip, unzip, strFromU8,
-  Zip, AsyncZipDeflate, Unzip, AsyncUnzipInflate
-} from 'fflate';
+import {preloadFont} from 'troika-three-text'
 
-// Workers will work in almost any browser (even IE11!)
-// However, they fail below Node v12 without the --experimental-worker
-// CLI flag, and will fail entirely on Node below v10.
+myApp.showLoadingScreen()
 
-// All of the async APIs use a node-style callback as so:
-const terminate = gzip(aMassiveFile, (err, data) => {
-  if (err) {
-    // The compressed data was likely corrupt, so we have to handle
-    // the error.
-    return;
+preloadFont(
+  {
+    font: 'path/to/myfontfile.woff', 
+    characters: 'abcdefghijklmnopqrstuvwxyz'
+  },
+  () => {
+    myApp.showScene()
   }
-  // Use data however you like
-  console.log(data.length);
-});
-
-if (needToCancel) {
-  // The return value of any of the asynchronous APIs is a function that,
-  // when called, will immediately cancel the operation. The callback
-  // will not be called.
-  terminate();
-}
-
-// If you wish to provide options, use the second argument.
-
-// The consume option will render the data inside aMassiveFile unusable,
-// but can improve performance and dramatically reduce memory usage.
-zlib(aMassiveFile, { consume: true, level: 9 }, (err, data) => {
-  // Use the data
-});
-
-// Asynchronous streams are similar to synchronous streams, but the
-// handler has the error that occurred (if any) as the first parameter,
-// and they don't block the main thread.
-
-// Additionally, any buffers that are pushed in will be consumed and
-// rendered unusable; if you need to use a buffer you push in, you
-// should clone it first.
-const gzs = new AsyncGzip({ level: 9, mem: 12, filename: 'hello.txt' });
-let wasCallbackCalled = false;
-gzs.ondata = (err, chunk, final) => {
-  // Note the new err parameter
-  if (err) {
-    // Note that after this occurs, the stream becomes corrupt and must
-    // be discarded. You can't continue pushing chunks and expect it to
-    // work.
-    console.error(err);
-    return;
-  }
-  wasCallbackCalled = true;
-}
-gzs.push(chunk);
-
-// Since the stream is asynchronous, the callback will not be called
-// immediately. If such behavior is absolutely necessary (it shouldn't
-// be), use synchronous streams.
-console.log(wasCallbackCalled) // false
-
-// To terminate an asynchronous stream's internal worker, call
-// stream.terminate().
-gzs.terminate();
-
-// This is way faster than zipSync because the compression of multiple
-// files runs in parallel. In fact, the fact that it's parallelized
-// makes it faster than most standalone ZIP CLIs. The effect is most
-// significant for multiple large files; less so for many small ones.
-zip({ f1: aMassiveFile, 'f2.txt': anotherMassiveFile }, {
-  // The options object is still optional, you can still do just
-  // zip(archive, callback)
-  level: 6,
-  mtime: 0
-}, (err, data) => {
-  // Save the ZIP file
-});
-
-// unzip is the only async function without support for consume option
-// Also parallelized, so unzip is also often much faster than unzipSync
-unzip(aMassiveZIPFile, (err, unzipped) => {
-  // If the archive has data.xml, log it here
-  console.log(unzipped['data.xml']);
-  // Conversion to string
-  console.log(strFromU8(unzipped['data.xml']))
-});
-
-// Streaming ZIP archives can accept asynchronous streams. This automatically
-// uses multicore compression.
-const zip = new Zip();
-zip.ondata = (err, chunk, final) => { ... };
-// The JSON and BMP are compressed in parallel
-const exampleFile = new AsyncZipDeflate('example.json');
-exampleFile.push(JSON.stringify({ large: 'object' }), true);
-const exampleFile2 = new AsyncZipDeflate('example2.bmp', { level: 9 });
-exampleFile.push(ec2a);
-exampleFile.push(ec2b);
-exampleFile.push(ec2c);
-...
-exampleFile.push(ec2Final, true);
-zip.end();
-
-// Streaming Unzip should register the asynchronous inflation algorithm
-// for parallel processing.
-const unzip = new Unzip(stream => {
-  if (stream.name.endsWith('.json')) {
-    stream.ondata = (err, chunk, final) => { ... };
-    stream.start();
-
-    if (needToCancel) {
-      // To cancel these streams, call .terminate()
-      stream.terminate();
-    }
-  }
-});
-unzip.register(AsyncUnzipInflate);
-unzip.push(data, true);
+)
 ```
 
-See the [documentation](https://github.com/101arrowz/fflate/blob/master/docs/README.md) for more detailed information about the API.
+The arguments are:
 
-## Bundle size estimates
+- `options`
+  
+  - `options.font` - The URL of the font file to preload. If `null` is passed, this will preload the default font.
+  
+  - `options.characters` - A string or array of string character sequences for which to pre-generate glyph SDF textures. Note that this _will_ honor ligature substitution, so you may need to specify ligature sequences in addition to their individual characters to get all possible glyphs, e.g. `["t", "h", "th"]` to get the "t" and "h" glyphs plus the "th" glyph.
 
-Since `fflate` uses ES Modules, this table should give you a general idea of `fflate`'s bundle size for the features you need. The maximum bundle size that is possible with `fflate` is about 27kB if you use every single feature, but feature parity with `pako` is only around 10kB (as opposed to 45kB from `pako`). If your bundle size increases dramatically after adding `fflate`, please [create an issue](https://github.com/101arrowz/fflate/issues/new).
+  - `options.sdfGlyphSize` - The size at which to prerender the SDFs for the `characters` glyphs. See the `sdfGlyphSize` config property on `Text` for details about SDF sizes. If not specified, will use the default SDF size.
 
-| Feature                 | Bundle size (minified)         | Nearest competitor     |
-|-------------------------|--------------------------------|------------------------|
-| Decompression           | 3kB                            | `tiny-inflate`         |
-| Compression             | 5kB                            | `UZIP.js`, 184% larger |
-| Async decompression     | 4kB (1kB + raw decompression)  | N/A                    |
-| Async compression       | 6kB (1kB + raw compression)    | N/A                    |
-| ZIP decompression       | 5kB (2kB + raw decompression)  | `UZIP.js`, 184% larger |
-| ZIP compression         | 7kB (2kB + raw compression)    | `UZIP.js`, 103% larger |
-| GZIP/Zlib decompression | 4kB (1kB + raw decompression)  | `pako`, 1040% larger   |
-| GZIP/Zlib compression   | 5kB (1kB + raw compression)    | `pako`, 812% larger    |
-| Streaming decompression | 4kB (1kB + raw decompression)  | `pako`, 1040% larger   |
-| Streaming compression   | 5kB (1kB + raw compression)    | `pako`, 812% larger    |
+- `callback` - A function that will be called when the preloading is complete.
 
-## What makes `fflate` so fast?
-Many JavaScript compression/decompression libraries exist. However, the most popular one, [`pako`](https://npmjs.com/package/pako), is merely a clone of Zlib rewritten nearly line-for-line in JavaScript. Although it is by no means poorly made, `pako` doesn't recognize the many differences between JavaScript and C, and therefore is suboptimal for performance. Moreover, even when minified, the library is 45 kB; it may not seem like much, but for anyone concerned with optimizing bundle size (especially library authors), it's more weight than necessary.
 
-Note that there exist some small libraries like [`tiny-inflate`](https://npmjs.com/package/tiny-inflate) for solely decompression, and with a minified size of 3 kB, it can be appealing; however, its performance is lackluster, typically 40% worse than `pako` in my tests.
+## Postprocessing
 
-[`UZIP.js`](https://github.com/photopea/UZIP.js) is both faster (by up to 40%) and smaller (14 kB minified) than `pako`, and it contains a variety of innovations that make it excellent for both performance and compression ratio. However, the developer made a variety of tiny mistakes and inefficient design choices that make it imperfect. Moreover, it does not support GZIP or Zlib data directly; one must remove the headers manually to use `UZIP.js`.
+It is possible to use `Text` within scenes that utilize the [postprocessing](https://github.com/vanruesc/postprocessing) library for applying image effects. However, you must enable a special mode in that library that allows `Text`'s custom material to be honored. Just do the following once somewhere in your code:
 
-So what makes `fflate` different? It takes the brilliant innovations of `UZIP.js` and optimizes them while adding direct support for GZIP and Zlib data. And unlike all of the above libraries, it uses ES Modules to allow for partial builds through tree shaking, meaning that it can rival even `tiny-inflate` in size while maintaining excellent performance. The end result is a library that, in total, weighs 8kB minified for the core build (3kB for decompression only and 5kB for compression only), is about 15% faster than `UZIP.js` or up to 60% faster than `pako`, and achieves the same or better compression ratio than the rest.
+```js
+import { OverrideMaterialManager } from 'postprocessing'
 
-If you're willing to have 160 kB of extra weight and [much less browser support](https://caniuse.com/wasm), you could theoretically achieve more performance than `fflate` with a WASM build of Zlib like [`wasm-flate`](https://www.npmjs.com/package/wasm-flate). However, per some tests I conducted, the WASM interpreters of major browsers are not fast enough as of December 2020 for `wasm-flate` to be useful: `fflate` is around 2x faster.
+OverrideMaterialManager.workaroundEnabled = true
+```
 
-Before you decide that `fflate` is the end-all compression library, you should note that JavaScript simply cannot rival the performance of a native program. If you're only using Node.js, it's probably better to use the [native Zlib bindings](https://nodejs.org/api/zlib.html), which tend to offer the best performance. Though note that even against Zlib, `fflate` is only around 30% slower in decompression and 10% slower in compression, and can still achieve better compression ratios!
 
-## Browser support
-`fflate` makes heavy use of typed arrays (`Uint8Array`, `Uint16Array`, etc.). Typed arrays can be polyfilled at the cost of performance, but the most recent browser that doesn't support them [is from 2011](https://caniuse.com/typedarrays), so I wouldn't bother.
+## Carets and Selection Ranges
 
-The asynchronous APIs also use `Worker`, which is not supported in a few browsers (however, the vast majority of browsers that support typed arrays support `Worker`).
+In addition to rendering text, it is possible to access positioning information for caret placement and selection ranges. To access that info, use the `getCaretAtPoint` and `getSelectionRects` utility functions. Both of these functions take a `textRenderInfo` object as input, which you can get from the `Text` object's `textRenderInfo` property after sync has completed. See "Handling Asynchronous Updates" above for how to react to sync completion events.
 
-Other than that, `fflate` is completely ES3, meaning you probably won't even need a bundler to use it.
+### `getCaretAtPoint(textRenderInfo, x, y)`
 
-## Testing
-You can validate the performance of `fflate` with `npm`/`yarn`/`pnpm` `test`. It validates that the module is working as expected, ensures the outputs are no more than 5% larger than competitors at max compression, and outputs performance metrics to `test/results`.
+This returns the caret position nearest to a given x/y position in the local text plane. This is useful for placing an editing caret based on a click or ther raycasted event. The return value is an object with the following properties:
 
-Note that the time it takes for the CLI to show the completion of each test is not representative of the time each package took, so please check the JSON output if you want accurate measurements.
+- `x` - x position of the caret
+- `y` - y position of the caret's bottom
+- `height` - height of the caret, based on the current fontSize and lineHeight
+- `charIndex` - the index in the original input string of this caret's target character. The caret will be for the position _before_ that character. For the final caret position, this will be equal to the string length. For ligature glyphs, this will be for the first character in the ligature sequence.
 
-## License
+### `getSelectionRects(textRenderInfo, start, end)`
 
-This software is [MIT Licensed](./LICENSE), with special exemptions for projects
-and organizations as noted below:
-
-- [SheetJS](https://github.com/SheetJS/) is exempt from MIT licensing and may
-  license any source code from this software under the BSD Zero Clause License
+This returns a list of rectangles covering all the characters within a given character range. This is useful for highlighting a selection range. The return value is an array of objects, each with `{left, top, right, bottom}` properties in the local text plane.

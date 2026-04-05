@@ -1,102 +1,35 @@
 {
-  "name": "fflate",
-  "version": "0.6.10",
-  "description": "High performance (de)compression in an 8kB package",
-  "main": "./lib/index.cjs",
-  "module": "./esm/browser.js",
-  "types": "./lib/index.d.ts",
-  "unpkg": "./umd/index.js",
-  "jsdelivr": "./umd/index.js",
-  "browser": {
-    "./lib/node-worker.cjs": "./lib/worker.cjs"
+  "name": "troika-three-text",
+  "version": "0.47.2",
+  "description": "SDF-based text rendering for Three.js",
+  "author": "Jason Johnston <jason.johnston@protectwise.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/protectwise/troika.git",
+    "directory": "packages/troika-three-text"
   },
-  "exports": {
-    ".": {
-      "node": {
-        "import": "./esm/index.mjs",
-        "require": "./lib/node.cjs"
-      },
-      "import": "./esm/browser.js",
-      "require": "./lib/index.cjs"
-    },
-    "./node": {
-      "import": "./esm/index.mjs",
-      "require": "./lib/node.cjs"
-    },
-    "./browser": {
-      "import": "./esm/browser.js",
-      "require": "./lib/browser.cjs"
-    }
-  },
-  "targets": {
-    "main": false,
-    "module": false,
-    "browser": false,
-    "types": false
-  },
-  "sideEffects": false,
-  "homepage": "https://101arrowz.github.io/fflate",
-  "repository": "https://github.com/101arrowz/fflate",
-  "bugs": {
-    "email": "arjunbarrett@gmail.com",
-    "url": "https://github.com/101arrowz/fflate/issues"
-  },
-  "author": "Arjun Barrett <arjunbarrett@gmail.com>",
   "license": "MIT",
-  "keywords": [
-    "gzip",
-    "gunzip",
-    "deflate",
-    "inflate",
-    "compression",
-    "decompression",
-    "zlib",
-    "pako",
-    "jszip",
-    "browser",
-    "node.js",
-    "tiny",
-    "fast",
-    "zip",
-    "unzip",
-    "non-blocking"
-  ],
-  "scripts": {
-    "build": "yarn build:lib && yarn build:docs && yarn build:demo",
-    "script": "node -r ts-node/register scripts/$SC.ts",
-    "build:lib": "tsc && tsc --project tsconfig.esm.json && yarn build:rewrite && yarn build:umd",
-    "build:umd": "SC=buildUMD yarn script",
-    "build:rewrite": "SC=rewriteBuilds yarn script",
-    "build:demo": "tsc --project tsconfig.demo.json && parcel build demo/index.html --public-url \"./\" && SC=cpGHPages yarn script",
-    "build:docs": "typedoc --mode library --plugin typedoc-plugin-markdown --hideProjectName --hideBreadcrumbs --readme none --disableSources --excludePrivate --excludeProtected --out docs/ src/index.ts",
-    "test": "TS_NODE_PROJECT=test/tsconfig.json uvu -b -r ts-node/register test",
-    "prepack": "yarn build && yarn test"
+  "sideEffects": false,
+  "main": "dist/troika-three-text.umd.js",
+  "module": "dist/troika-three-text.esm.js",
+  "module:src": "src/index.js",
+  "dependencies": {
+    "bidi-js": "^1.0.2",
+    "troika-three-utils": "^0.47.2",
+    "troika-worker-utils": "^0.47.2",
+    "webgl-sdf-generator": "1.1.1"
+  },
+  "peerDependencies": {
+    "three": ">=0.125.0"
   },
   "devDependencies": {
-    "@types/node": "^14.11.2",
-    "@types/pako": "*",
-    "@types/react": "^16.9.55",
-    "@types/react-dom": "^16.9.9",
-    "jszip": "^3.5.0",
-    "pako": "*",
-    "parcel": "^2.0.0-nightly.440",
-    "parcel-config-precache-manifest": "^0.0.3",
-    "preact": "^10.5.5",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "simple-git": "^2.22.0",
-    "terser": "^5.3.8",
-    "tiny-inflate": "*",
-    "ts-node": "^9.0.0",
-    "typedoc": "^0.17.0-3",
-    "typedoc-plugin-markdown": "^3.0.2",
-    "typescript": "^4.0.2",
-    "uvu": "^0.3.3",
-    "uzip": "*"
+    "@fredli74/typr": "0.3.7",
+    "fflate": "^0.7.0",
+    "node-fetch": "^2.6.0"
   },
-  "alias": {
-    "react": "preact/compat",
-    "react-dom": "preact/compat",
-    "react-dom/test-utils": "preact/test-utils"
-  }
+  "scripts": {
+    "build-typr": "rollup -c rollup.config.build-typr.js",
+    "build-woff2otf": "rollup -c rollup.config.build-woff2otf.js"
+  },
+  "gitHead": "27cb013dd98d1b3e47d42dcc2787313949525572"
 }
